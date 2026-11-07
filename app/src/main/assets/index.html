@@ -1,0 +1,1965 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Rota 12x60 — Gestor Automotivo, BlaBlaCar, Consignado & Estadia (CWB ↔ JLLE)</title>
+  <style>
+    :root {
+      --background: #0b1120;
+      --card: #131c31;
+      --foreground: #f1f5f9;
+      --muted-foreground: #94a3b8;
+      --border: #1e293b;
+      --primary: #2563eb;
+      --primary-foreground: #ffffff;
+    }
+    html.light {
+      --background: #f8fafc;
+      --card: #ffffff;
+      --foreground: #0f172a;
+      --muted-foreground: #64748b;
+      --border: #e2e8f0;
+      --primary: #2563eb;
+      --primary-foreground: #ffffff;
+    }
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--background);
+      color: var(--foreground);
+      line-height: 1.45;
+      padding-bottom: 5rem;
+      -webkit-font-smoothing: antialiased;
+    }
+    input, select, button { font-family: inherit; color: inherit; }
+    input[type="range"] { accent-color: #2563eb; width: 100%; cursor: pointer; height: 6px; }
+    input[type="number"], input[type="text"], input[type="date"], select {
+      background-color: var(--background);
+      border: 1px solid var(--border);
+      color: var(--foreground);
+      border-radius: 0.5rem;
+      padding: 0.45rem 0.7rem;
+      font-size: 0.875rem;
+      width: 100%;
+      outline: none;
+    }
+    input:focus, select:focus { border-color: #3b82f6; }
+    button { cursor: pointer; background: none; border: none; }
+
+    /* Layout & Utility Classes (100% Offline Ready for Android APK) */
+    .sticky { position: sticky; }
+    .top-0 { top: 0; }
+    .z-30 { z-index: 30; }
+    .hidden { display: none !important; }
+    .block { display: block; }
+    .flex { display: flex; }
+    .grid { display: grid; }
+    .flex-col { flex-direction: column; }
+    .flex-wrap { flex-wrap: wrap; }
+    .items-center { align-items: center; }
+    .items-baseline { align-items: baseline; }
+    .justify-between { justify-content: space-between; }
+    .justify-center { justify-content: center; }
+    .gap-1\.5 { gap: 0.375rem; }
+    .gap-2 { gap: 0.5rem; }
+    .gap-2\.5 { gap: 0.625rem; }
+    .gap-3 { gap: 0.75rem; }
+    .gap-4 { gap: 1rem; }
+    .gap-5 { gap: 1.25rem; }
+    .space-y-1 > * + * { margin-top: 0.25rem; }
+    .space-y-2 > * + * { margin-top: 0.5rem; }
+    .space-y-3 > * + * { margin-top: 0.75rem; }
+    .space-y-4 > * + * { margin-top: 1rem; }
+    .space-y-5 > * + * { margin-top: 1.25rem; }
+    .space-y-6 > * + * { margin-top: 1.5rem; }
+
+    .max-w-6xl { max-width: 72rem; }
+    .mx-auto { margin-left: auto; margin-right: auto; }
+    .w-full { width: 100%; }
+    .w-10 { width: 2.5rem; }
+    .h-10 { height: 2.5rem; }
+    .h-2\.5 { height: 0.625rem; }
+    .h-full { height: 100%; }
+    .max-h-\[520px\] { max-height: 520px; }
+
+    .p-2\.5 { padding: 0.625rem; }
+    .p-3 { padding: 0.75rem; }
+    .p-3\.5 { padding: 0.875rem; }
+    .p-4 { padding: 1rem; }
+    .px-1 { padding-left: 0.25rem; padding-right: 0.25rem; }
+    .px-2 { padding-left: 0.5rem; padding-right: 0.5rem; }
+    .px-2\.5 { padding-left: 0.625rem; padding-right: 0.625rem; }
+    .px-3 { padding-left: 0.75rem; padding-right: 0.75rem; }
+    .px-3\.5 { padding-left: 0.875rem; padding-right: 0.875rem; }
+    .px-4 { padding-left: 1rem; padding-right: 1rem; }
+    .py-0\.5 { padding-top: 0.125rem; padding-bottom: 0.125rem; }
+    .py-1 { padding-top: 0.25rem; padding-bottom: 0.25rem; }
+    .py-1\.5 { padding-top: 0.375rem; padding-bottom: 0.375rem; }
+    .py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+    .py-2\.5 { padding-top: 0.625rem; padding-bottom: 0.625rem; }
+    .py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
+    .py-4 { padding-top: 1rem; padding-bottom: 1rem; }
+    .pt-1 { padding-top: 0.25rem; }
+    .pt-2 { padding-top: 0.5rem; }
+    .pt-2\.5 { padding-top: 0.625rem; }
+    .pt-3 { padding-top: 0.75rem; }
+    .pt-5 { padding-top: 1.25rem; }
+    .pb-1 { padding-bottom: 0.25rem; }
+    .pb-2\.5 { padding-bottom: 0.625rem; }
+    .pb-3 { padding-bottom: 0.75rem; }
+    .pb-24 { padding-bottom: 6rem; }
+    .mt-0\.5 { margin-top: 0.125rem; }
+    .mt-1 { margin-top: 0.25rem; }
+    .mt-2 { margin-top: 0.5rem; }
+    .mt-3 { margin-top: 0.75rem; }
+    .mb-1 { margin-bottom: 0.25rem; }
+
+    .rounded { border-radius: 0.25rem; }
+    .rounded-md { border-radius: 0.375rem; }
+    .rounded-lg { border-radius: 0.5rem; }
+    .rounded-xl { border-radius: 0.75rem; }
+    .rounded-full { border-radius: 9999px; }
+    .border { border: 1px solid var(--border); }
+    .border-b { border-bottom: 1px solid var(--border); }
+    .border-t { border-top: 1px solid var(--border); }
+
+    .bg-\[var\(--background\)\] { background-color: var(--background); }
+    .bg-\[var\(--card\)\], .bg-\[var\(--card\)\]\/95 { background-color: var(--card); }
+    .bg-blue-600 { background-color: #2563eb; }
+    .bg-blue-500\/5 { background-color: rgba(59, 130, 246, 0.06); }
+    .bg-blue-500\/10 { background-color: rgba(59, 130, 246, 0.12); }
+    .bg-blue-500\/15 { background-color: rgba(59, 130, 246, 0.16); }
+    .bg-emerald-500 { background-color: #10b981; }
+    .bg-emerald-500\/10 { background-color: rgba(16, 185, 129, 0.12); }
+    .bg-emerald-500\/15 { background-color: rgba(16, 185, 129, 0.16); }
+    .bg-emerald-500\/20 { background-color: rgba(16, 185, 129, 0.22); }
+    .bg-amber-500\/10 { background-color: rgba(245, 158, 11, 0.12); }
+    .bg-rose-500\/15 { background-color: rgba(244, 63, 94, 0.16); }
+    .bg-rose-500\/20 { background-color: rgba(244, 63, 94, 0.22); }
+    .bg-gray-500\/20 { background-color: rgba(100, 116, 139, 0.22); }
+
+    .border-blue-500 { border-color: #3b82f6; }
+    .border-blue-500\/20, .border-blue-500\/30, .border-blue-500\/50 { border-color: rgba(59, 130, 246, 0.35); }
+    .border-emerald-500\/30, .border-emerald-500\/40 { border-color: rgba(16, 185, 129, 0.35); }
+    .border-red-500\/30 { border-color: rgba(239, 68, 68, 0.35); }
+
+    .text-white { color: #ffffff; }
+    .text-\[var\(--foreground\)\] { color: var(--foreground); }
+    .text-\[var\(--muted-foreground\)\] { color: var(--muted-foreground); }
+    .text-blue-500 { color: #3b82f6; }
+    .text-emerald-500 { color: #10b981; }
+    .text-amber-500 { color: #f59e0b; }
+    .text-rose-500, .text-red-500 { color: #f43f5e; }
+
+    .text-xs { font-size: 0.75rem; }
+    .text-sm { font-size: 0.875rem; }
+    .text-base { font-size: 1rem; }
+    .text-lg { font-size: 1.125rem; }
+    .font-medium { font-weight: 500; }
+    .font-semibold { font-weight: 600; }
+    .font-bold { font-weight: 700; }
+    .uppercase { text-transform: uppercase; }
+    .text-left { text-align: left; }
+    .text-right { text-align: right; }
+    .text-center { text-align: center; }
+    .whitespace-nowrap { white-space: nowrap; }
+    .overflow-x-auto { overflow-x: auto; }
+    .overflow-y-auto { overflow-y: auto; }
+    .overflow-hidden { overflow: hidden; }
+    .opacity-65 { opacity: 0.65; }
+
+    table { width: 100%; border-collapse: collapse; }
+    tbody.divide-y > tr + tr { border-top: 1px solid var(--border); }
+
+    .tab-active {
+      background-color: #2563eb !important;
+      color: #ffffff !important;
+      font-weight: 600;
+      border-color: #2563eb !important;
+    }
+
+    .grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+    .grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .col-span-2 { grid-column: span 2 / span 2; }
+
+    @media (min-width: 640px) {
+      .sm\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .sm\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .sm\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+      .sm\:text-sm { font-size: 0.875rem; }
+      .sm\:text-lg { font-size: 1.125rem; }
+      .sm\:p-5 { padding: 1.25rem; }
+    }
+    @media (min-width: 768px) {
+      .md\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .md\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    }
+    @media (min-width: 1024px) {
+      .lg\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .lg\:grid-cols-12 { grid-template-columns: repeat(12, minmax(0, 1fr)); }
+      .lg\:col-span-4 { grid-column: span 4 / span 4; }
+      .lg\:col-span-5 { grid-column: span 5 / span 5; }
+      .lg\:col-span-7 { grid-column: span 7 / span 7; }
+      .lg\:col-span-8 { grid-column: span 8 / span 8; }
+    }
+    @media (min-width: 1280px) {
+      .xl\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top App Bar -->
+  <header class="sticky top-0 z-30 bg-[var(--card)] border-b px-4 py-3">
+    <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center font-bold text-lg">
+          208
+        </div>
+        <div>
+          <div class="flex items-center gap-2 flex-wrap">
+            <h1 class="font-bold text-base sm:text-lg">Rota 12x60 • CWB ↔ Joinville</h1>
+            <span class="text-xs px-2 py-0.5 rounded-full bg-blue-500/15 text-blue-500 font-medium border border-blue-500/20">Peugeot 208 Allure 13</span>
+          </div>
+          <p class="text-xs text-[var(--muted-foreground)]">Escala 12x12x12x60 (7,5 ciclos/mês) • 140 km/trecho • Consignado 40/119</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <button onclick="toggleTheme()" class="text-xs px-2.5 py-1.5 rounded-lg border bg-[var(--background)] font-medium" title="Alternar Tema Claro/Escuro">
+          🌓 Tema
+        </button>
+        <button id="btn-export-backup" onclick="exportBackup()" class="text-xs px-3 py-1.5 rounded-lg border bg-[var(--background)] font-medium flex items-center gap-1.5">
+          <span>⬇</span> Backup
+        </button>
+        <label class="text-xs px-3 py-1.5 rounded-lg border bg-[var(--background)] font-medium flex items-center gap-1.5" style="cursor:pointer">
+          <span>⬆</span> Restaurar
+          <input type="file" id="input-import-backup" accept=".json,application/json,*/*" class="hidden" onchange="importBackup(event)" />
+        </label>
+        <button id="btn-reset-defaults" onclick="resetDefaults()" class="text-xs px-2.5 py-1.5 rounded-lg border border-red-500/30 text-red-500 font-medium" title="Restaurar padrões">
+          ↺
+        </button>
+      </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <nav class="max-w-6xl mx-auto mt-3 flex gap-1.5 overflow-x-auto pb-1">
+      <button onclick="switchTab('visao-geral')" id="tab-btn-visao-geral" class="tab-btn tab-active text-xs sm:text-sm px-3.5 py-2 rounded-lg whitespace-nowrap">
+        📊 Simulador Geral
+      </button>
+      <button onclick="switchTab('troca-carro')" id="tab-btn-troca-carro" class="tab-btn bg-[var(--background)] text-[var(--muted-foreground)] text-xs sm:text-sm px-3.5 py-2 rounded-lg whitespace-nowrap border">
+        🚗 Troca de Carro & Modais
+      </button>
+      <button onclick="switchTab('moradia')" id="tab-btn-moradia" class="tab-btn bg-[var(--background)] text-[var(--muted-foreground)] text-xs sm:text-sm px-3.5 py-2 rounded-lg whitespace-nowrap border">
+        🏠 Estadia em Joinville (12h)
+      </button>
+      <button onclick="switchTab('consignado')" id="tab-btn-consignado" class="tab-btn bg-[var(--background)] text-[var(--muted-foreground)] text-xs sm:text-sm px-3.5 py-2 rounded-lg whitespace-nowrap border">
+        🏦 Consignado (40/119)
+      </button>
+      <button onclick="switchTab('diario-viagens')" id="tab-btn-diario-viagens" class="tab-btn bg-[var(--background)] text-[var(--muted-foreground)] text-xs sm:text-sm px-3.5 py-2 rounded-lg whitespace-nowrap border">
+        🛣️ Diário BlaBlaCar (<span id="badge-trips-count">0</span>)
+      </button>
+      <button onclick="switchTab('manutencoes')" id="tab-btn-manutencoes" class="tab-btn bg-[var(--background)] text-[var(--muted-foreground)] text-xs sm:text-sm px-3.5 py-2 rounded-lg whitespace-nowrap border">
+        🔧 Manutenções (<span id="badge-maint-count">0</span>)
+      </button>
+    </nav>
+  </header>
+
+  <!-- Sticky Live KPI Strip -->
+  <div class="bg-[var(--card)] border-b px-4 py-2.5">
+    <div class="max-w-6xl mx-auto grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+      <div class="p-2.5 rounded-lg bg-[var(--background)] border">
+        <div class="text-xs text-[var(--muted-foreground)]">Custo Viagens (Comb.+Pedágio)</div>
+        <div class="text-base sm:text-lg font-bold text-amber-500" id="kpi-fuel-toll">R$ 0,00/mês</div>
+        <div class="text-xs text-[var(--muted-foreground)]" id="kpi-km-month">2.100 km/mês</div>
+      </div>
+      <div class="p-2.5 rounded-lg bg-[var(--background)] border">
+        <div class="text-xs text-[var(--muted-foreground)]">Receita BlaBlaCar (Caronas)</div>
+        <div class="text-base sm:text-lg font-bold text-emerald-500" id="kpi-blablacar-rev">+ R$ 0,00/mês</div>
+        <div class="text-xs text-[var(--muted-foreground)]" id="kpi-blablacar-detail">Média 0,0 pass./trecho</div>
+      </div>
+      <div class="p-2.5 rounded-lg bg-[var(--background)] border">
+        <div class="text-xs text-[var(--muted-foreground)]">Consignado + Fixos + Manut.</div>
+        <div class="text-base sm:text-lg font-bold text-rose-500" id="kpi-fixed-maint">R$ 0,00/mês</div>
+        <div class="text-xs text-[var(--muted-foreground)]" id="kpi-consignado-sub">Consignado: R$ 518,35 (79 rest.)</div>
+      </div>
+      <div class="p-2.5 rounded-lg bg-blue-500/10 border border-blue-500/30">
+        <div class="text-xs font-medium text-blue-500">Desembolso Líquido Mensal</div>
+        <div class="text-base sm:text-lg font-bold" id="kpi-net-total">R$ 0,00/mês</div>
+        <div class="text-xs text-[var(--muted-foreground)]" id="kpi-net-per-cycle">R$ 0,00 por escala (4 dias)</div>
+      </div>
+    </div>
+  </div>
+
+  <main class="max-w-6xl mx-auto px-4 pt-5 space-y-6">
+
+    <!-- ==================== TAB 1: SIMULADOR GERAL ==================== -->
+    <section id="tab-visao-geral" class="tab-panel space-y-6">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+        <div class="lg:col-span-7 space-y-5">
+          <!-- Card 1 -->
+          <div class="bg-[var(--card)] border rounded-xl p-4 sm:p-5 space-y-4">
+            <div class="flex items-center justify-between border-b pb-3">
+              <div>
+                <h2 class="font-semibold text-base">1. Escala 12x12x12x60 e Rota Curitiba ↔ Joinville</h2>
+                <p class="text-xs text-[var(--muted-foreground)]">12h serviço → 12h descanso (Joinville) → 12h serviço → 60h folga (Curitiba) = 4 dias/ciclo</p>
+              </div>
+              <span class="text-xs font-semibold px-2.5 py-1 rounded-md bg-blue-500/10 text-blue-500" id="label-cycles-badge">7,5 ciclos/mês</span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <div class="flex justify-between text-xs mb-1">
+                  <label for="inp-cycles" class="font-medium">Ciclos de escala por mês</label>
+                  <span class="font-bold text-blue-500" id="val-cycles">7,5 ciclos (15 trechos)</span>
+                </div>
+                <input id="inp-cycles" type="range" min="1" max="10" step="0.5" value="7.5" oninput="updateSim()" />
+                <div class="flex justify-between text-xs text-[var(--muted-foreground)]">
+                  <span>Férias (1)</span>
+                  <span>Padrão 30d (7,5)</span>
+                  <span>Máx (10)</span>
+                </div>
+              </div>
+
+              <div>
+                <div class="flex justify-between text-xs mb-1">
+                  <label for="inp-dist-oneway" class="font-medium">Distância Casa (CWB) ↔ Batalhão (JLLE)</label>
+                  <span class="font-bold text-blue-500" id="val-dist-oneway">140 km/trecho</span>
+                </div>
+                <input id="inp-dist-oneway" type="range" min="100" max="200" step="1" value="140" oninput="updateSim()" />
+                <div class="flex justify-between text-xs text-[var(--muted-foreground)]">
+                  <span>100 km</span>
+                  <span>Seu padrão: 140 km</span>
+                  <span>200 km</span>
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-xs font-medium mb-1">Pedágio por trecho (BR-376 Garuva) (R$)</label>
+                <input id="inp-toll-oneway" type="number" step="0.10" value="5.70" oninput="updateSim()" />
+              </div>
+
+              <div>
+                <label class="block text-xs font-medium mb-1">Km extras em Curitiba por folga de 60h</label>
+                <input id="inp-km-curitiba" type="number" step="5" value="30" oninput="updateSim()" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="bg-[var(--card)] border rounded-xl p-4 sm:p-5 space-y-4">
+            <div class="flex items-center justify-between border-b pb-3">
+              <div>
+                <h2 class="font-semibold text-base">2. Peugeot 208 Allure 2013 & Combustível</h2>
+                <p class="text-xs text-[var(--muted-foreground)]">Altere o consumo ou preço da gasolina aditivada para ver o impacto imediato</p>
+              </div>
+              <span class="text-xs font-semibold px-2.5 py-1 rounded-md bg-amber-500/10 text-amber-500" id="label-cost-per-km">R$ 0,51/km</span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <div class="flex justify-between text-xs mb-1">
+                  <label for="inp-consumption" class="font-medium">Consumo médio no painel (km/l)</label>
+                  <span class="font-bold text-amber-500" id="val-consumption">12,3 km/l</span>
+                </div>
+                <input id="inp-consumption" type="range" min="7.0" max="20.0" step="0.1" value="12.3" oninput="updateSim()" />
+                <div class="flex justify-between text-xs text-[var(--muted-foreground)]">
+                  <span>7 km/l</span>
+                  <span>Atual: 12,3 km/l</span>
+                  <span>20 km/l</span>
+                </div>
+              </div>
+
+              <div>
+                <div class="flex justify-between text-xs mb-1">
+                  <label for="inp-fuel-price" class="font-medium">Preço Gasolina Aditivada (R$/litro)</label>
+                  <span class="font-bold text-amber-500" id="val-fuel-price">R$ 6,29/l</span>
+                </div>
+                <input id="inp-fuel-price" type="range" min="4.50" max="8.50" step="0.01" value="6.29" oninput="updateSim()" />
+                <div class="flex justify-between text-xs text-[var(--muted-foreground)]">
+                  <span>R$ 4,50</span>
+                  <span>Atual: R$ 6,29</span>
+                  <span>R$ 8,50</span>
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-xs font-medium mb-1">Manutenção preventiva/corretiva estimada (R$/mês)</label>
+                <div class="flex gap-2">
+                  <input id="inp-maint-monthly" type="number" step="10" value="350" oninput="updateSim()" />
+                  <button onclick="syncMaintFromLog()" class="text-xs px-2.5 py-1.5 rounded-lg bg-blue-500/15 text-blue-500 border border-blue-500/30 whitespace-nowrap">
+                    Usar Histórico
+                  </button>
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-xs font-medium mb-1">Seguro + IPVA/Licenc. rateado (R$/mês)</label>
+                <input id="inp-fixed-car-monthly" type="number" step="10" value="280" oninput="updateSim()" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="bg-[var(--card)] border rounded-xl p-4 sm:p-5 space-y-4">
+            <div class="flex items-center justify-between border-b pb-3">
+              <div>
+                <h2 class="font-semibold text-base">3. Caronas BlaBlaCar (Motorista • Máx 3 por viagem)</h2>
+                <p class="text-xs text-[var(--muted-foreground)]">Configure a média de passageiros na Ida (CWB→JLLE) e Volta (JLLE→CWB)</p>
+              </div>
+              <button onclick="syncTripsFromLog()" class="text-xs px-2.5 py-1.5 rounded-lg bg-emerald-500/15 text-emerald-500 border border-emerald-500/30 font-medium">
+                Puxar Média do Diário
+              </button>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <div class="flex justify-between text-xs mb-1">
+                  <label for="inp-pax-ida" class="font-medium">Média Passageiros na IDA (CWB → JLLE)</label>
+                  <span class="font-bold text-emerald-500" id="val-pax-ida">2,0 pass.</span>
+                </div>
+                <input id="inp-pax-ida" type="range" min="0" max="3" step="0.1" value="2.0" oninput="updateSim()" />
+                <div class="flex justify-between text-xs text-[var(--muted-foreground)]">
+                  <span>0</span><span>1</span><span>2</span><span>3 (Lotado)</span>
+                </div>
+              </div>
+
+              <div>
+                <div class="flex justify-between text-xs mb-1">
+                  <label for="inp-pax-volta" class="font-medium">Média Passageiros na VOLTA (JLLE → CWB)</label>
+                  <span class="font-bold text-emerald-500" id="val-pax-volta">2,0 pass.</span>
+                </div>
+                <input id="inp-pax-volta" type="range" min="0" max="3" step="0.1" value="2.0" oninput="updateSim()" />
+                <div class="flex justify-between text-xs text-[var(--muted-foreground)]">
+                  <span>0</span><span>1</span><span>2</span><span>3 (Lotado)</span>
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-xs font-medium mb-1">Valor recebido por passageiro (R$)</label>
+                <input id="inp-pax-price" type="number" step="1" value="40" oninput="updateSim()" />
+              </div>
+
+              <div>
+                <label class="block text-xs font-medium mb-1">Km extra de desvio por trecho (embarque/desemb.)</label>
+                <input id="inp-pax-detour-km" type="number" step="1" value="6" oninput="updateSim()" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column -->
+        <div class="lg:col-span-5 space-y-5">
+          <div class="bg-[var(--card)] border rounded-xl p-4 sm:p-5 space-y-4">
+            <h2 class="font-semibold text-base border-b pb-2.5">Raio-X do Cenário Atual (Peugeot 208)</h2>
+            <div class="overflow-x-auto">
+              <table class="w-full text-xs sm:text-sm">
+                <thead>
+                  <tr class="border-b text-[var(--muted-foreground)] text-left">
+                    <th class="py-2 font-medium">Item</th>
+                    <th class="py-2 font-medium text-right">1 Trecho</th>
+                    <th class="py-2 font-medium text-right">1 Escala</th>
+                    <th class="py-2 font-medium text-right">Mês</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y" id="tbody-raiox"></tbody>
+              </table>
+            </div>
+
+            <div class="p-3.5 rounded-xl bg-[var(--background)] border space-y-2">
+              <div class="flex justify-between text-xs">
+                <span class="font-medium">Cobertura BlaBlaCar s/ Combustível + Pedágio</span>
+                <span class="font-bold text-emerald-500" id="val-coverage-pct">100%</span>
+              </div>
+              <div class="w-full h-2.5 rounded-full bg-gray-500/20 overflow-hidden">
+                <div id="bar-coverage" class="h-full bg-emerald-500" style="width: 100%"></div>
+              </div>
+              <p class="text-xs text-[var(--muted-foreground)]" id="txt-breakeven-insight"></p>
+            </div>
+          </div>
+
+          <div class="bg-[var(--card)] border rounded-xl p-4 sm:p-5 space-y-3">
+            <h3 class="font-semibold text-sm">Tabela Rápida por Trecho (140 km + Desvio)</h3>
+            <p class="text-xs text-[var(--muted-foreground)]">Quanto custa ou sobra em cada viagem conforme a lotação:</p>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2" id="grid-pax-scenarios"></div>
+          </div>
+
+          <div class="bg-[var(--card)] border rounded-xl p-4 sm:p-5 space-y-3">
+            <div class="flex items-center justify-between">
+              <h3 class="font-semibold text-sm">Estadia no Descanso de 12h em Joinville</h3>
+              <button onclick="switchTab('moradia')" class="text-xs text-blue-500 font-medium">Ver 4 cenários →</button>
+            </div>
+            <select id="sel-active-housing" onchange="updateSim()">
+              <option value="batalhao">1. Dormir no Batalhão (Atual — R$ 0/mês)</option>
+              <option value="kitnet">2. Alugar Kitnet/Quarto Fixo em Joinville</option>
+              <option value="hotel">3. Pernoite Avulso (Hotel/Airbnb nas 7,5 escalas)</option>
+              <option value="mudar">4. Mudar de vez para Joinville (Ir a CWB só na folga)</option>
+            </select>
+            <div id="box-housing-quick-summary" class="text-xs text-[var(--muted-foreground)] p-3 rounded-lg bg-[var(--background)] border"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 2: TROCA DE CARRO & MODAIS ==================== -->
+    <section id="tab-troca-carro" class="tab-panel hidden space-y-6">
+      <div class="bg-[var(--card)] border rounded-xl p-4 sm:p-5 space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-3 border-b pb-3">
+          <div>
+            <h2 class="font-semibold text-base sm:text-lg">Simulador de Troca de Veículo + Estratégia do Consignado</h2>
+            <p class="text-xs text-[var(--muted-foreground)]">Compare continuar com o Peugeot 208 Allure 2013 vs. trocar de veículo ou mudar de modal de transporte</p>
+          </div>
+          <div class="flex flex-wrap gap-1.5">
+            <button onclick="applyCarPreset('onix')" class="text-xs px-2.5 py-1.5 rounded-lg border bg-[var(--background)] font-medium">Hatch 1.0 (Onix/HB20/Polo)</button>
+            <button onclick="applyCarPreset('kwid')" class="text-xs px-2.5 py-1.5 rounded-lg border bg-[var(--background)] font-medium">Kwid / Mobi 1.0</button>
+            <button onclick="applyCarPreset('turbo')" class="text-xs px-2.5 py-1.5 rounded-lg border bg-[var(--background)] font-medium">1.0 Turbo (Polo/Onix)</button>
+            <button onclick="applyCarPreset('eletrico')" class="text-xs px-2.5 py-1.5 rounded-lg border bg-[var(--background)] font-medium">⚡ BYD Dolphin Mini</button>
+            <button onclick="applyCarPreset('moto')" class="text-xs px-2.5 py-1.5 rounded-lg border bg-[var(--background)] font-medium">🏍️ Moto 250cc</button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+          <div class="p-4 rounded-xl bg-[var(--background)] border space-y-3">
+            <h3 class="font-semibold text-sm text-blue-500">A. Seu Peugeot 208 + Consignado</h3>
+            <div>
+              <label class="block text-xs font-medium mb-1">Valor de Venda / FIPE do Peugeot 208 (R$)</label>
+              <input id="inp-peugeot-fipe" type="number" step="500" value="35500" oninput="updateSim()" />
+            </div>
+            <div>
+              <label class="block text-xs font-medium mb-1">O que fazer com o Consignado na troca?</label>
+              <select id="sel-consig-strategy" onchange="updateSim()">
+                <option value="keep">Manter em folha (R$ 518,35/mês) e usar 100% da venda do Peugeot</option>
+                <option value="payoff_current">Quitar com a venda (Curva atual 79 rest.: ~R$ 26.111) e zerar parcela</option>
+                <option value="payoff_table">Quitar com a venda (Soma tabela mar/26: R$ 23.855) e zerar parcela</option>
+              </select>
+            </div>
+            <div id="box-peugeot-equity" class="p-3 rounded-lg bg-blue-500/10 border border-blue-500/20 text-xs space-y-1"></div>
+          </div>
+
+          <div class="p-4 rounded-xl bg-[var(--background)] border space-y-3">
+            <h3 class="font-semibold text-sm text-emerald-500">B. Veículo Candidato para Troca</h3>
+            <div class="grid grid-cols-2 gap-2.5">
+              <div class="col-span-2">
+                <label class="block text-xs font-medium mb-1">Nome / Modelo do Veículo</label>
+                <input id="inp-newcar-name" type="text" value="Onix / HB20 / Polo 1.0" oninput="updateSim()" />
+              </div>
+              <div>
+                <label class="block text-xs font-medium mb-1">Preço do Veículo (R$)</label>
+                <input id="inp-newcar-price" type="number" step="1000" value="62000" oninput="updateSim()" />
+              </div>
+              <div>
+                <label class="block text-xs font-medium mb-1">Consumo Estrada (km/un)</label>
+                <input id="inp-newcar-consumption" type="number" step="0.1" value="15.8" oninput="updateSim()" />
+              </div>
+              <div>
+                <label class="block text-xs font-medium mb-1">Preço Comb./Energia (R$)</label>
+                <input id="inp-newcar-fuelprice" type="number" step="0.05" value="6.15" oninput="updateSim()" />
+              </div>
+              <div>
+                <label class="block text-xs font-medium mb-1">Manutenção est. (R$/mês)</label>
+                <input id="inp-newcar-maint" type="number" step="10" value="180" oninput="updateSim()" />
+              </div>
+              <div>
+                <label class="block text-xs font-medium mb-1">Seguro + IPVA (R$/mês)</label>
+                <input id="inp-newcar-fixed" type="number" step="10" value="390" oninput="updateSim()" />
+              </div>
+              <div>
+                <label class="block text-xs font-medium mb-1">Faz BlaBlaCar nele?</label>
+                <select id="sel-newcar-blablacar" onchange="updateSim()">
+                  <option value="yes">Sim (até 3 pass.)</option>
+                  <option value="no">Não (ex: Moto)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-4 rounded-xl bg-[var(--background)] border space-y-3">
+            <h3 class="font-semibold text-sm text-amber-500">C. Pagamento da Diferença & Outros Modais</h3>
+            <div class="grid grid-cols-2 gap-2.5">
+              <div>
+                <label class="block text-xs font-medium mb-1">Recursos próprios extras (R$)</label>
+                <input id="inp-extra-downpayment" type="number" step="500" value="0" oninput="updateSim()" />
+              </div>
+              <div>
+                <label class="block text-xs font-medium mb-1">Prazo financiamento (meses)</label>
+                <input id="inp-newloan-months" type="number" step="6" value="48" oninput="updateSim()" />
+              </div>
+              <div>
+                <label class="block text-xs font-medium mb-1">Taxa juros financ. (% a.m.)</label>
+                <input id="inp-newloan-rate" type="number" step="0.05" value="1.45" oninput="updateSim()" />
+              </div>
+              <div>
+                <label class="block text-xs font-medium mb-1">Passagem Ônibus (R$/trecho)</label>
+                <input id="inp-bus-ticket" type="number" step="1" value="55" oninput="updateSim()" />
+              </div>
+              <div>
+                <label class="block text-xs font-medium mb-1">Uber p/ Rodoviária (R$/trecho)</label>
+                <input id="inp-bus-uber" type="number" step="1" value="22" oninput="updateSim()" />
+              </div>
+              <div>
+                <label class="block text-xs font-medium mb-1">Carona Passageiro + Uber (R$)</label>
+                <input id="inp-ride-passenger" type="number" step="1" value="55" oninput="updateSim()" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4" id="grid-modal-comparison"></div>
+
+      <div class="bg-[var(--card)] border rounded-xl p-4 sm:p-5 space-y-3">
+        <h3 class="font-semibold text-base">Comparativo Analítico Lado a Lado (Mensal e Acumulado em 1 e 3 Anos)</h3>
+        <div class="overflow-x-auto">
+          <table class="w-full text-xs sm:text-sm">
+            <thead>
+              <tr class="border-b text-[var(--muted-foreground)] text-left">
+                <th class="py-2.5 font-medium">Componente de Custo / Receita</th>
+                <th class="py-2.5 font-medium text-right">1. Peugeot 208 (Atual)</th>
+                <th class="py-2.5 font-medium text-right" id="th-newcar-col">2. Troca de Veículo</th>
+                <th class="py-2.5 font-medium text-right">3. Ônibus + Uber</th>
+                <th class="py-2.5 font-medium text-right">4. Carona Passageiro</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y" id="tbody-modal-comparison"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 3: ESTADIA EM JOINVILLE (12H) ==================== -->
+    <section id="tab-moradia" class="tab-panel hidden space-y-6">
+      <div class="bg-[var(--card)] border rounded-xl p-4 sm:p-5 space-y-4">
+        <div class="border-b pb-3">
+          <h2 class="font-semibold text-base sm:text-lg">Simulador de Estadia em Joinville (Descanso de 12h entre os dois turnos de 12h)</h2>
+          <p class="text-xs text-[var(--muted-foreground)]">Hoje você dorme no Batalhão nos ~7,5 intervalos de 12h por mês. Compare quanto custaria alugar um local fixo, pegar diárias avulsas ou mudar para Joinville:</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="p-4 rounded-xl bg-[var(--background)] border space-y-3">
+            <h3 class="font-semibold text-sm text-blue-500">Opção 2: Alugar Kitnet / Quarto Fixo</h3>
+            <div>
+              <label class="block text-xs font-medium mb-1">Aluguel mensal em Joinville (R$)</label>
+              <input id="inp-rent-monthly" type="number" step="50" value="950" oninput="updateSim()" />
+            </div>
+            <div>
+              <label class="block text-xs font-medium mb-1">Condomínio + Luz + Água + Internet (R$/mês)</label>
+              <input id="inp-rent-bills" type="number" step="20" value="220" oninput="updateSim()" />
+            </div>
+            <div>
+              <label class="block text-xs font-medium mb-1">Distância Batalhão ↔ Imóvel (km por trecho)</label>
+              <input id="inp-rent-dist-km" type="number" step="1" value="5" oninput="updateSim()" />
+            </div>
+          </div>
+
+          <div class="p-4 rounded-xl bg-[var(--background)] border space-y-3">
+            <h3 class="font-semibold text-sm text-amber-500">Opção 3: Pernoite Avulso (Hotel / Airbnb)</h3>
+            <div>
+              <label class="block text-xs font-medium mb-1">Valor médio da diária/pernoite (R$/noite)</label>
+              <input id="inp-hotel-nightly" type="number" step="10" value="110" oninput="updateSim()" />
+            </div>
+            <div>
+              <label class="block text-xs font-medium mb-1">Quantas escalas/mês usaria hotel?</label>
+              <input id="inp-hotel-nights" type="number" step="0.5" value="7.5" oninput="updateSim()" />
+            </div>
+            <div>
+              <label class="block text-xs font-medium mb-1">Distância Batalhão ↔ Hotel (km por trecho)</label>
+              <input id="inp-hotel-dist-km" type="number" step="1" value="4" oninput="updateSim()" />
+            </div>
+          </div>
+
+          <div class="p-4 rounded-xl bg-[var(--background)] border space-y-3">
+            <h3 class="font-semibold text-sm text-emerald-500">Opção 4: Mudar para Joinville (Inverter Rota)</h3>
+            <div>
+              <label class="block text-xs font-medium mb-1">Custo extra moradia JLLE vs CWB (R$/mês)</label>
+              <input id="inp-move-housing-diff" type="number" step="50" value="800" oninput="updateSim()" />
+            </div>
+            <div>
+              <label class="block text-xs font-medium mb-1">Idas a Curitiba/mês nas folgas de 60h</label>
+              <input id="inp-move-cwb-trips" type="number" step="0.5" value="3" oninput="updateSim()" />
+            </div>
+            <div>
+              <label class="block text-xs font-medium mb-1">Distância Casa JLLE ↔ Batalhão (km/trecho)</label>
+              <input id="inp-move-local-km" type="number" step="1" value="6" oninput="updateSim()" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4" id="grid-housing-cards"></div>
+    </section>
+
+    <!-- ==================== TAB 4: CONSIGNADO BRADESCO ==================== -->
+    <section id="tab-consignado" class="tab-panel hidden space-y-6">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+        <div class="lg:col-span-5 space-y-4">
+          <div class="bg-[var(--card)] border rounded-xl p-4 sm:p-5 space-y-4">
+            <div class="flex items-center justify-between border-b pb-3">
+              <div>
+                <h2 class="font-semibold text-base">Contrato 05009801 • Banco Bradesco SA</h2>
+                <p class="text-xs text-[var(--muted-foreground)]">Relatório base de 25/03/2026 • Portabilidade 119 parcelas</p>
+              </div>
+              <span class="text-xs font-bold px-2.5 py-1 rounded-md bg-blue-500/15 text-blue-500" id="consig-badge-progress">40/119 Pagas</span>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+              <div class="p-3 rounded-lg bg-[var(--background)] border">
+                <div class="text-xs text-[var(--muted-foreground)]">Parcelas Pagas</div>
+                <div class="text-lg font-bold text-emerald-500" id="consig-paid-count">41 de 120</div>
+                <div class="text-xs text-[var(--muted-foreground)]" id="consig-paid-sum">R$ 21.252,35 pagos</div>
+              </div>
+              <div class="p-3 rounded-lg bg-[var(--background)] border">
+                <div class="text-xs text-[var(--muted-foreground)]">Parcelas Restantes</div>
+                <div class="text-lg font-bold text-rose-500" id="consig-rem-count">79 parcelas</div>
+                <div class="text-xs text-[var(--muted-foreground)]" id="consig-rem-nominal">R$ 40.949,65 nominal</div>
+              </div>
+              <div class="p-3 rounded-lg bg-blue-500/10 border border-blue-500/30">
+                <div class="text-xs text-blue-500 font-medium">Quitação Curva Atualizada</div>
+                <div class="text-lg font-bold" id="consig-payoff-adjusted">R$ 26.110,97</div>
+                <div class="text-xs text-emerald-500 font-medium" id="consig-disc-adjusted">Desconto: R$ 14.838,68</div>
+              </div>
+              <div class="p-3 rounded-lg bg-[var(--background)] border">
+                <div class="text-xs text-[var(--muted-foreground)]">Soma Tabela (25/03/26)</div>
+                <div class="text-lg font-bold" id="consig-payoff-table">R$ 23.854,97</div>
+                <div class="text-xs text-emerald-500 font-medium" id="consig-disc-table">Desconto: R$ 17.094,68</div>
+              </div>
+            </div>
+
+            <div class="p-4 rounded-xl bg-[var(--background)] border space-y-3">
+              <h3 class="font-semibold text-sm">Simulador de Amortização Extra (De trás pra frente)</h3>
+              <p class="text-xs text-[var(--muted-foreground)]">Digite um valor disponível para ver quantas parcelas finais (Inversa 1, 2, 3...) você consegue eliminar hoje:</p>
+              <div class="flex items-center gap-3">
+                <input id="inp-amort-budget" type="number" step="100" value="3000" oninput="renderConsignado()" />
+                <select id="sel-amort-mode" onchange="renderConsignado()">
+                  <option value="table">Valores da Tabela (Inversa 1..79)</option>
+                  <option value="adjusted">Curva Atualizada (Nov/2026)</option>
+                </select>
+              </div>
+              <div id="box-amort-result" class="p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-xs space-y-1"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-7">
+          <div class="bg-[var(--card)] border rounded-xl p-4 sm:p-5 space-y-3">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <div>
+                <h3 class="font-semibold text-base">Tabela Completa das 120 Parcelas (28/06/2023 a 28/05/2033)</h3>
+                <p class="text-xs text-[var(--muted-foreground)]">Toque no botão "SIM / NÃO" para marcar futuras parcelas pagas</p>
+              </div>
+              <div class="flex gap-1.5">
+                <button onclick="filterConsigTable('all')" id="btn-filter-all" class="text-xs px-2.5 py-1 rounded border bg-blue-600 text-white">Todas (120)</button>
+                <button onclick="filterConsigTable('unpaid')" id="btn-filter-unpaid" class="text-xs px-2.5 py-1 rounded border bg-[var(--background)]">A Pagar (79)</button>
+                <button onclick="filterConsigTable('paid')" id="btn-filter-paid" class="text-xs px-2.5 py-1 rounded border bg-[var(--background)]">Pagas (41)</button>
+              </div>
+            </div>
+
+            <div class="max-h-[520px] overflow-y-auto border rounded-lg">
+              <table class="w-full text-xs">
+                <thead class="sticky top-0 bg-[var(--card)] border-b text-[var(--muted-foreground)]">
+                  <tr>
+                    <th class="py-2 px-2.5 text-left">Pago</th>
+                    <th class="py-2 px-2.5 text-left">Data</th>
+                    <th class="py-2 px-2.5 text-center">Inversa</th>
+                    <th class="py-2 px-2.5 text-center">Parcela</th>
+                    <th class="py-2 px-2.5 text-center">Pós-Portab.</th>
+                    <th class="py-2 px-2.5 text-right">Valor</th>
+                    <th class="py-2 px-2.5 text-right">Amortização</th>
+                  </tr>
+                </thead>
+                <tbody id="tbody-consignado" class="divide-y"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 5: DIÁRIO DE VIAGENS & BLABLACAR ==================== -->
+    <section id="tab-diario-viagens" class="tab-panel hidden space-y-6">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+        <div class="lg:col-span-4">
+          <div class="bg-[var(--card)] border rounded-xl p-4 sm:p-5 space-y-3">
+            <h2 class="font-semibold text-base border-b pb-2.5">Registrar Viagem Real (CWB ↔ JLLE)</h2>
+            <div>
+              <label class="block text-xs font-medium mb-1">Data da Viagem</label>
+              <input id="trip-date" type="date" />
+            </div>
+            <div>
+              <label class="block text-xs font-medium mb-1">Trajeto / Sentido</label>
+              <select id="trip-route">
+                <option value="Ida: Curitiba → Joinville (Batalhão)">Ida: Curitiba → Joinville (Batalhão)</option>
+                <option value="Volta: Joinville (Batalhão) → Curitiba">Volta: Joinville (Batalhão) → Curitiba</option>
+                <option value="Deslocamento Local Joinville">Deslocamento Local Joinville</option>
+                <option value="Outro Trajeto">Outro Trajeto</option>
+              </select>
+            </div>
+            <div class="grid grid-cols-2 gap-2.5">
+              <div>
+                <label class="block text-xs font-medium mb-1">Km Percorridos</label>
+                <input id="trip-km" type="number" step="1" value="146" />
+              </div>
+              <div>
+                <label class="block text-xs font-medium mb-1">Consumo Painel (km/l)</label>
+                <input id="trip-kml" type="number" step="0.1" value="12.3" />
+              </div>
+              <div>
+                <label class="block text-xs font-medium mb-1">Passageiros (0 a 3)</label>
+                <select id="trip-pax">
+                  <option value="0">0 passageiros</option>
+                  <option value="1">1 passageiro</option>
+                  <option value="2" selected>2 passageiros</option>
+                  <option value="3">3 passageiros (Lotado)</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-xs font-medium mb-1">Valor por Passageiro (R$)</label>
+                <input id="trip-pax-price" type="number" step="1" value="40" />
+              </div>
+              <div>
+                <label class="block text-xs font-medium mb-1">Preço Gasolina (R$/l)</label>
+                <input id="trip-fuel-price" type="number" step="0.01" value="6.29" />
+              </div>
+              <div>
+                <label class="block text-xs font-medium mb-1">Pedágio (R$)</label>
+                <input id="trip-toll" type="number" step="0.10" value="5.70" />
+              </div>
+            </div>
+            <div>
+              <label class="block text-xs font-medium mb-1">Observação (opcional)</label>
+              <input id="trip-notes" type="text" placeholder="Ex: Embarque no Shopping Estação" />
+            </div>
+            <button onclick="addTrip()" class="w-full py-2.5 rounded-lg bg-blue-600 text-white font-semibold text-sm">
+              + Salvar Viagem no Diário
+            </button>
+          </div>
+        </div>
+
+        <div class="lg:col-span-8 space-y-4">
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3" id="trips-summary-cards"></div>
+          <div class="bg-[var(--card)] border rounded-xl p-4 sm:p-5 space-y-3">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <h3 class="font-semibold text-base">Histórico de Viagens Registradas</h3>
+              <button onclick="syncTripsFromLog()" class="text-xs px-3 py-1.5 rounded-lg bg-emerald-500/15 text-emerald-500 border border-emerald-500/30 font-medium">
+                Aplicar Média Real no Simulador Geral
+              </button>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full text-xs">
+                <thead>
+                  <tr class="border-b text-[var(--muted-foreground)] text-left">
+                    <th class="py-2 px-2">Data</th>
+                    <th class="py-2 px-2">Trajeto</th>
+                    <th class="py-2 px-2 text-right">Km / Consumo</th>
+                    <th class="py-2 px-2 text-center">Passageiros</th>
+                    <th class="py-2 px-2 text-right">Custo Viagem</th>
+                    <th class="py-2 px-2 text-right">Receita BlaBlaCar</th>
+                    <th class="py-2 px-2 text-right">Saldo Líquido</th>
+                    <th class="py-2 px-2 text-center">Ação</th>
+                  </tr>
+                </thead>
+                <tbody id="tbody-trips" class="divide-y"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 6: MANUTENÇÕES PEUGEOT 208 ==================== -->
+    <section id="tab-manutencoes" class="tab-panel hidden space-y-6">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+        <div class="lg:col-span-4">
+          <div class="bg-[var(--card)] border rounded-xl p-4 sm:p-5 space-y-3">
+            <h2 class="font-semibold text-base border-b pb-2.5">Adicionar Gasto de Manutenção</h2>
+            <div>
+              <label class="block text-xs font-medium mb-1">Data do Serviço / Compra</label>
+              <input id="maint-date" type="date" />
+            </div>
+            <div>
+              <label class="block text-xs font-medium mb-1">Descrição (Peça / Mão de Obra)</label>
+              <input id="maint-desc" type="text" placeholder="Ex: Troca correia dentada + óleo + filtros" />
+            </div>
+            <div class="grid grid-cols-2 gap-2.5">
+              <div>
+                <label class="block text-xs font-medium mb-1">Categoria</label>
+                <select id="maint-cat">
+                  <option value="Preventiva / Óleo / Filtros">Preventiva / Óleo</option>
+                  <option value="Suspensão / Freios">Suspensão / Freios</option>
+                  <option value="Motor / Correia / Arrefecimento">Motor / Arrefec.</option>
+                  <option value="Pneus / Alinhamento">Pneus / Alinham.</option>
+                  <option value="Elétrica / Bateria">Elétrica / Bateria</option>
+                  <option value="Estética / Outros">Estética / Outros</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-xs font-medium mb-1">Valor Total (R$)</label>
+                <input id="maint-cost" type="number" step="10" placeholder="450.00" />
+              </div>
+              <div>
+                <label class="block text-xs font-medium mb-1">Quilometragem (Odômetro)</label>
+                <input id="maint-km" type="number" step="100" value="115000" />
+              </div>
+              <div>
+                <label class="block text-xs font-medium mb-1">Meses p/ diluir no cálculo</label>
+                <input id="maint-months-span" type="number" step="1" value="12" oninput="renderMaint()" />
+              </div>
+            </div>
+            <button onclick="addMaint()" class="w-full py-2.5 rounded-lg bg-blue-600 text-white font-semibold text-sm">
+              + Cadastrar Manutenção
+            </button>
+          </div>
+        </div>
+
+        <div class="lg:col-span-8 space-y-4">
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3" id="maint-summary-cards"></div>
+          <div class="bg-[var(--card)] border rounded-xl p-4 sm:p-5 space-y-3">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <h3 class="font-semibold text-base">Histórico de Manutenções do Peugeot 208 Allure 2013</h3>
+              <button onclick="syncMaintFromLog()" class="text-xs px-3 py-1.5 rounded-lg bg-blue-500/15 text-blue-500 border border-blue-500/30 font-medium">
+                Usar Rateio Mensal no Simulador
+              </button>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full text-xs">
+                <thead>
+                  <tr class="border-b text-[var(--muted-foreground)] text-left">
+                    <th class="py-2 px-2">Data</th>
+                    <th class="py-2 px-2">Serviço / Peça</th>
+                    <th class="py-2 px-2">Categoria</th>
+                    <th class="py-2 px-2 text-right">Odômetro</th>
+                    <th class="py-2 px-2 text-right">Valor</th>
+                    <th class="py-2 px-2 text-center">Ação</th>
+                  </tr>
+                </thead>
+                <tbody id="tbody-maint" class="divide-y"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    const INITIAL_CONSIGNADO = [
+      { pago: true,  data: "28/06/2023", inv: 120, parc: 1,   port: null, val: 518.35, amort: 0 },
+      { pago: true,  data: "28/07/2023", inv: 119, parc: 2,   port: 1,    val: 518.35, amort: 0 },
+      { pago: true,  data: "28/08/2023", inv: 118, parc: 3,   port: 2,    val: 518.35, amort: 0 },
+      { pago: true,  data: "28/09/2023", inv: 117, parc: 4,   port: 3,    val: 518.35, amort: 0 },
+      { pago: true,  data: "28/10/2023", inv: 116, parc: 5,   port: 4,    val: 518.35, amort: 0 },
+      { pago: true,  data: "28/11/2023", inv: 115, parc: 6,   port: 5,    val: 518.35, amort: 0 },
+      { pago: true,  data: "28/12/2023", inv: 114, parc: 7,   port: 6,    val: 518.35, amort: 0 },
+      { pago: true,  data: "28/01/2024", inv: 113, parc: 8,   port: 7,    val: 518.35, amort: 0 },
+      { pago: true,  data: "28/02/2024", inv: 112, parc: 9,   port: 8,    val: 518.35, amort: 0 },
+      { pago: true,  data: "28/03/2024", inv: 111, parc: 10,  port: 9,    val: 518.35, amort: 0 },
+      { pago: true,  data: "28/04/2024", inv: 110, parc: 11,  port: 10,   val: 518.35, amort: 0 },
+      { pago: true,  data: "28/05/2024", inv: 109, parc: 12,  port: 11,   val: 518.35, amort: 0 },
+      { pago: true,  data: "28/06/2024", inv: 108, parc: 13,  port: 12,   val: 518.35, amort: 0 },
+      { pago: true,  data: "28/07/2024", inv: 107, parc: 14,  port: 13,   val: 518.35, amort: 0 },
+      { pago: true,  data: "28/08/2024", inv: 106, parc: 15,  port: 14,   val: 518.35, amort: 0 },
+      { pago: true,  data: "28/09/2024", inv: 105, parc: 16,  port: 15,   val: 518.35, amort: 0 },
+      { pago: true,  data: "28/10/2024", inv: 104, parc: 17,  port: 16,   val: 518.35, amort: 0 },
+      { pago: true,  data: "28/11/2024", inv: 103, parc: 18,  port: 17,   val: 518.35, amort: 0 },
+      { pago: true,  data: "28/12/2024", inv: 102, parc: 19,  port: 18,   val: 518.35, amort: 0 },
+      { pago: true,  data: "28/01/2025", inv: 101, parc: 20,  port: 19,   val: 518.35, amort: 0 },
+      { pago: true,  data: "28/02/2025", inv: 100, parc: 21,  port: 20,   val: 518.35, amort: 0 },
+      { pago: true,  data: "28/03/2025", inv: 99,  parc: 22,  port: 21,   val: 518.35, amort: 0 },
+      { pago: true,  data: "28/04/2025", inv: 98,  parc: 23,  port: 22,   val: 518.35, amort: 0 },
+      { pago: true,  data: "28/05/2025", inv: 97,  parc: 24,  port: 23,   val: 518.35, amort: 0 },
+      { pago: true,  data: "28/06/2025", inv: 96,  parc: 25,  port: 24,   val: 518.35, amort: 0 },
+      { pago: true,  data: "28/07/2025", inv: 95,  parc: 26,  port: 25,   val: 518.35, amort: 0 },
+      { pago: true,  data: "28/08/2025", inv: 94,  parc: 27,  port: 26,   val: 518.35, amort: 0 },
+      { pago: true,  data: "28/09/2025", inv: 93,  parc: 28,  port: 27,   val: 518.35, amort: 0 },
+      { pago: true,  data: "28/10/2025", inv: 92,  parc: 29,  port: 28,   val: 518.35, amort: 0 },
+      { pago: true,  data: "28/11/2025", inv: 91,  parc: 30,  port: 29,   val: 518.35, amort: 0 },
+      { pago: true,  data: "28/12/2025", inv: 90,  parc: 31,  port: 30,   val: 518.35, amort: 0 },
+      { pago: true,  data: "28/01/2026", inv: 89,  parc: 32,  port: 31,   val: 518.35, amort: 0 },
+      { pago: true,  data: "28/02/2026", inv: 88,  parc: 33,  port: 32,   val: 518.35, amort: 0 },
+      { pago: true,  data: "28/03/2026", inv: 87,  parc: 34,  port: 33,   val: 518.35, amort: 517.05 },
+      { pago: true,  data: "28/04/2026", inv: 86,  parc: 35,  port: 34,   val: 518.35, amort: 510.62 },
+      { pago: true,  data: "28/05/2026", inv: 85,  parc: 36,  port: 35,   val: 518.35, amort: 504.47 },
+      { pago: true,  data: "28/06/2026", inv: 84,  parc: 37,  port: 36,   val: 518.35, amort: 497.77 },
+      { pago: true,  data: "28/07/2026", inv: 83,  parc: 38,  port: 37,   val: 518.35, amort: 491.37 },
+      { pago: true,  data: "28/08/2026", inv: 82,  parc: 39,  port: 38,   val: 518.35, amort: 485.05 },
+      { pago: true,  data: "28/09/2026", inv: 81,  parc: 40,  port: 39,   val: 518.35, amort: 479.01 },
+      { pago: true,  data: "28/10/2026", inv: 80,  parc: 41,  port: 40,   val: 518.35, amort: 473.05 },
+      { pago: false, data: "28/11/2026", inv: 79,  parc: 42,  port: 41,   val: 518.35, amort: 466.96 },
+      { pago: false, data: "28/12/2026", inv: 78,  parc: 43,  port: 42,   val: 518.35, amort: 461.15 },
+      { pago: false, data: "28/01/2027", inv: 77,  parc: 44,  port: 43,   val: 518.35, amort: 455.41 },
+      { pago: false, data: "28/02/2027", inv: 76,  parc: 45,  port: 44,   val: 518.35, amort: 450.12 },
+      { pago: false, data: "28/03/2027", inv: 75,  parc: 46,  port: 45,   val: 518.35, amort: 443.96 },
+      { pago: false, data: "28/04/2027", inv: 74,  parc: 47,  port: 46,   val: 518.35, amort: 438.43 },
+      { pago: false, data: "28/05/2027", inv: 73,  parc: 48,  port: 47,   val: 518.35, amort: 432.79 },
+      { pago: false, data: "28/06/2027", inv: 72,  parc: 49,  port: 48,   val: 518.35, amort: 427.40 },
+      { pago: false, data: "28/07/2027", inv: 71,  parc: 50,  port: 49,   val: 518.35, amort: 422.08 },
+      { pago: false, data: "28/08/2027", inv: 70,  parc: 51,  port: 50,   val: 518.35, amort: 416.48 },
+      { pago: false, data: "28/09/2027", inv: 69,  parc: 52,  port: 51,   val: 518.35, amort: 411.29 },
+      { pago: false, data: "28/10/2027", inv: 68,  parc: 53,  port: 52,   val: 518.35, amort: 406.34 },
+      { pago: false, data: "28/11/2027", inv: 67,  parc: 54,  port: 53,   val: 518.35, amort: 400.95 },
+      { pago: false, data: "28/12/2027", inv: 66,  parc: 55,  port: 54,   val: 518.35, amort: 395.96 },
+      { pago: false, data: "28/01/2028", inv: 65,  parc: 56,  port: 55,   val: 518.35, amort: 390.70 },
+      { pago: false, data: "28/02/2028", inv: 64,  parc: 57,  port: 56,   val: 518.35, amort: 386.64 },
+      { pago: false, data: "28/03/2028", inv: 63,  parc: 58,  port: 57,   val: 518.35, amort: 381.03 },
+      { pago: false, data: "28/04/2028", inv: 62,  parc: 59,  port: 58,   val: 518.35, amort: 376.60 },
+      { pago: false, data: "28/05/2028", inv: 61,  parc: 60,  port: 59,   val: 518.35, amort: 371.45 },
+      { pago: false, data: "28/06/2028", inv: 60,  parc: 61,  port: 60,   val: 518.35, amort: 366.83 },
+      { pago: false, data: "28/07/2028", inv: 59,  parc: 62,  port: 61,   val: 518.35, amort: 362.11 },
+      { pago: false, data: "28/08/2028", inv: 58,  parc: 63,  port: 62,   val: 518.35, amort: 357.45 },
+      { pago: false, data: "28/09/2028", inv: 57,  parc: 64,  port: 63,   val: 518.35, amort: 353.15 },
+      { pago: false, data: "28/10/2028", inv: 56,  parc: 65,  port: 64,   val: 518.35, amort: 348.46 },
+      { pago: false, data: "28/11/2028", inv: 55,  parc: 66,  port: 65,   val: 518.35, amort: 344.12 },
+      { pago: false, data: "28/12/2028", inv: 54,  parc: 67,  port: 66,   val: 518.35, amort: 339.98 },
+      { pago: false, data: "28/01/2029", inv: 53,  parc: 68,  port: 67,   val: 518.35, amort: 335.33 },
+      { pago: false, data: "28/02/2029", inv: 52,  parc: 69,  port: 68,   val: 518.35, amort: 331.43 },
+      { pago: false, data: "28/03/2029", inv: 51,  parc: 70,  port: 69,   val: 518.35, amort: 327.44 },
+      { pago: false, data: "28/04/2029", inv: 50,  parc: 71,  port: 70,   val: 518.35, amort: 323.09 },
+      { pago: false, data: "28/05/2029", inv: 49,  parc: 72,  port: 71,   val: 518.35, amort: 319.07 },
+      { pago: false, data: "28/06/2029", inv: 48,  parc: 73,  port: 72,   val: 518.35, amort: 315.10 },
+      { pago: false, data: "28/07/2029", inv: 47,  parc: 74,  port: 73,   val: 518.35, amort: 310.92 },
+      { pago: false, data: "28/08/2029", inv: 46,  parc: 75,  port: 74,   val: 518.35, amort: 306.92 },
+      { pago: false, data: "28/09/2029", inv: 45,  parc: 76,  port: 75,   val: 518.35, amort: 303.35 },
+      { pago: false, data: "28/10/2029", inv: 44,  parc: 77,  port: 76,   val: 518.35, amort: 299.20 },
+      { pago: false, data: "28/11/2029", inv: 43,  parc: 78,  port: 77,   val: 518.35, amort: 295.47 },
+      { pago: false, data: "28/12/2029", inv: 42,  parc: 79,  port: 78,   val: 518.35, amort: 292.04 },
+      { pago: false, data: "28/01/2030", inv: 41,  parc: 80,  port: 79,   val: 518.35, amort: 287.92 },
+      { pago: false, data: "28/02/2030", inv: 40,  parc: 81,  port: 80,   val: 518.35, amort: 284.57 },
+      { pago: false, data: "28/03/2030", inv: 39,  parc: 82,  port: 81,   val: 518.35, amort: 281.15 },
+      { pago: false, data: "28/04/2030", inv: 38,  parc: 83,  port: 82,   val: 518.35, amort: 277.42 },
+      { pago: false, data: "28/05/2030", inv: 37,  parc: 84,  port: 83,   val: 518.35, amort: 273.85 },
+      { pago: false, data: "28/06/2030", inv: 36,  parc: 85,  port: 84,   val: 518.35, amort: 270.67 },
+      { pago: false, data: "28/07/2030", inv: 35,  parc: 86,  port: 85,   val: 518.35, amort: 266.96 },
+      { pago: false, data: "28/08/2030", inv: 34,  parc: 87,  port: 86,   val: 518.35, amort: 263.64 },
+      { pago: false, data: "28/09/2030", inv: 33,  parc: 88,  port: 87,   val: 518.35, amort: 260.25 },
+      { pago: false, data: "28/10/2030", inv: 32,  parc: 89,  port: 88,   val: 518.35, amort: 256.90 },
+      { pago: false, data: "28/11/2030", inv: 31,  parc: 90,  port: 89,   val: 518.35, amort: 253.81 },
+      { pago: false, data: "28/12/2030", inv: 30,  parc: 91,  port: 90,   val: 518.35, amort: 250.54 },
+      { pago: false, data: "28/01/2031", inv: 29,  parc: 92,  port: 91,   val: 518.35, amort: 247.22 },
+      { pago: false, data: "28/02/2031", inv: 28,  parc: 93,  port: 92,   val: 518.35, amort: 244.34 },
+      { pago: false, data: "28/03/2031", inv: 27,  parc: 94,  port: 93,   val: 518.35, amort: 241.20 },
+      { pago: false, data: "28/04/2031", inv: 26,  parc: 95,  port: 94,   val: 518.35, amort: 238.20 },
+      { pago: false, data: "28/05/2031", inv: 25,  parc: 96,  port: 95,   val: 518.35, amort: 235.23 },
+      { pago: false, data: "28/06/2031", inv: 24,  parc: 97,  port: 96,   val: 518.35, amort: 232.21 },
+      { pago: false, data: "28/07/2031", inv: 23,  parc: 98,  port: 97,   val: 518.35, amort: 229.22 },
+      { pago: false, data: "28/08/2031", inv: 22,  parc: 99,  port: 98,   val: 518.35, amort: 226.46 },
+      { pago: false, data: "28/09/2031", inv: 21,  parc: 100, port: 99,   val: 518.35, amort: 223.46 },
+      { pago: false, data: "28/10/2031", inv: 20,  parc: 101, port: 100,  val: 518.35, amort: 220.58 },
+      { pago: false, data: "28/11/2031", inv: 19,  parc: 102, port: 101,  val: 518.35, amort: 218.02 },
+      { pago: false, data: "28/12/2031", inv: 18,  parc: 103, port: 102,  val: 518.35, amort: 215.12 },
+      { pago: false, data: "28/01/2032", inv: 17,  parc: 104, port: 103,  val: 518.35, amort: 212.36 },
+      { pago: false, data: "28/02/2032", inv: 16,  parc: 105, port: 104,  val: 518.35, amort: 209.89 },
+      { pago: false, data: "28/03/2032", inv: 15,  parc: 106, port: 105,  val: 518.35, amort: 207.02 },
+      { pago: false, data: "28/04/2032", inv: 14,  parc: 107, port: 106,  val: 518.35, amort: 204.44 },
+      { pago: false, data: "28/05/2032", inv: 13,  parc: 108, port: 107,  val: 518.35, amort: 201.81 },
+      { pago: false, data: "28/06/2032", inv: 12,  parc: 109, port: 108,  val: 518.35, amort: 199.30 },
+      { pago: false, data: "28/07/2032", inv: 11,  parc: 110, port: 109,  val: 518.35, amort: 196.82 },
+      { pago: false, data: "28/08/2032", inv: 10,  parc: 111, port: 110,  val: 518.35, amort: 194.20 },
+      { pago: false, data: "28/09/2032", inv: 9,   parc: 112, port: 111,  val: 518.35, amort: 191.78 },
+      { pago: false, data: "28/10/2032", inv: 8,   parc: 113, port: 112,  val: 518.35, amort: 189.48 },
+      { pago: false, data: "28/11/2032", inv: 7,   parc: 114, port: 113,  val: 518.35, amort: 186.96 },
+      { pago: false, data: "28/12/2032", inv: 6,   parc: 115, port: 114,  val: 518.35, amort: 184.63 },
+      { pago: false, data: "28/01/2033", inv: 5,   parc: 116, port: 115,  val: 518.35, amort: 182.18 },
+      { pago: false, data: "28/02/2033", inv: 4,   parc: 117, port: 116,  val: 518.35, amort: 180.29 },
+      { pago: false, data: "28/03/2033", inv: 3,   parc: 118, port: 117,  val: 518.35, amort: 177.75 },
+      { pago: false, data: "28/04/2033", inv: 2,   parc: 119, port: 118,  val: 518.35, amort: 175.61 },
+      { pago: false, data: "28/05/2033", inv: 1,   parc: 120, port: 119,  val: 518.35, amort: 173.28 }
+    ];
+
+    const AMORT_CURVE_87 = INITIAL_CONSIGNADO.filter(r => r.amort > 0).map(r => r.amort);
+
+    const INITIAL_TRIPS = [
+      { id: 1, date: "2026-11-01", route: "Ida: Curitiba → Joinville (Batalhão)", km: 145, kml: 12.3, pax: 3, paxPrice: 40, fuelPrice: 6.29, toll: 5.70, notes: "Lotado 3 passageiros" },
+      { id: 2, date: "2026-11-03", route: "Volta: Joinville (Batalhão) → Curitiba", km: 145, kml: 12.3, pax: 2, paxPrice: 40, fuelPrice: 6.29, toll: 5.70, notes: "Retorno descanso 60h" },
+      { id: 3, date: "2026-11-05", route: "Ida: Curitiba → Joinville (Batalhão)", km: 144, kml: 12.4, pax: 2, paxPrice: 40, fuelPrice: 6.29, toll: 5.70, notes: "2 passageiros pontuais" },
+      { id: 4, date: "2026-11-07", route: "Volta: Joinville (Batalhão) → Curitiba", km: 146, kml: 12.2, pax: 3, paxPrice: 40, fuelPrice: 6.29, toll: 5.70, notes: "3 passageiros volta CWB" }
+    ];
+
+    const INITIAL_MAINT = [
+      { id: 1, date: "2026-08-15", desc: "Troca de óleo + filtros (ar, óleo, combustível)", cat: "Preventiva / Óleo / Filtros", km: 112000, cost: 420.00 }
+    ];
+
+    let state = {
+      consignado: JSON.parse(JSON.stringify(INITIAL_CONSIGNADO)),
+      trips: JSON.parse(JSON.stringify(INITIAL_TRIPS)),
+      maint: JSON.parse(JSON.stringify(INITIAL_MAINT)),
+      consigFilter: 'all'
+    };
+
+    const STORAGE_KEY = "rota_12x60_peugeot208_v1";
+
+    function toggleTheme() {
+      document.documentElement.classList.toggle('light');
+    }
+
+    function fmtBRL(v) {
+      return (Number(v) || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    }
+    function fmtNum(v, dec = 1) {
+      return (Number(v) || 0).toLocaleString('pt-BR', { minimumFractionDigits: dec, maximumFractionDigits: dec });
+    }
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (parsed.consignado && parsed.consignado.length === 120) state.consignado = parsed.consignado;
+          if (Array.isArray(parsed.trips)) state.trips = parsed.trips;
+          if (Array.isArray(parsed.maint)) state.maint = parsed.maint;
+          if (parsed.inputs) {
+            Object.entries(parsed.inputs).forEach(([id, val]) => {
+              const el = document.getElementById(id);
+              if (el) el.value = val;
+            });
+          }
+        }
+      } catch (e) {
+        console.warn("Erro ao carregar estado:", e);
+      }
+    }
+
+    function saveState() {
+      try {
+        const inputIds = [
+          'inp-cycles','inp-dist-oneway','inp-toll-oneway','inp-km-curitiba',
+          'inp-consumption','inp-fuel-price','inp-maint-monthly','inp-fixed-car-monthly',
+          'inp-pax-ida','inp-pax-volta','inp-pax-price','inp-pax-detour-km','sel-active-housing',
+          'inp-peugeot-fipe','sel-consig-strategy','inp-newcar-name','inp-newcar-price',
+          'inp-newcar-consumption','inp-newcar-fuelprice','inp-newcar-maint','inp-newcar-fixed',
+          'sel-newcar-blablacar','inp-extra-downpayment','inp-newloan-months','inp-newloan-rate',
+          'inp-bus-ticket','inp-bus-uber','inp-ride-passenger',
+          'inp-rent-monthly','inp-rent-bills','inp-rent-dist-km',
+          'inp-hotel-nightly','inp-hotel-nights','inp-hotel-dist-km',
+          'inp-move-housing-diff','inp-move-cwb-trips','inp-move-local-km',
+          'inp-amort-budget','sel-amort-mode','maint-months-span'
+        ];
+        const inputs = {};
+        inputIds.forEach(id => {
+          const el = document.getElementById(id);
+          if (el) inputs[id] = el.value;
+        });
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({
+          consignado: state.consignado,
+          trips: state.trips,
+          maint: state.maint,
+          inputs
+        }));
+      } catch (e) {
+        console.warn("Erro ao salvar estado:", e);
+      }
+    }
+
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.add('hidden'));
+      document.querySelectorAll('.tab-btn').forEach(b => {
+        b.classList.remove('tab-active');
+        b.classList.add('bg-[var(--background)]', 'text-[var(--muted-foreground)]', 'border');
+      });
+      const panel = document.getElementById('tab-' + tabId);
+      if (panel) panel.classList.remove('hidden');
+      const btn = document.getElementById('tab-btn-' + tabId);
+      if (btn) {
+        btn.classList.add('tab-active');
+        btn.classList.remove('bg-[var(--background)]', 'text-[var(--muted-foreground)]', 'border');
+      }
+    }
+
+    function getConsignadoStats() {
+      const paidRows = state.consignado.filter(r => r.pago);
+      const unpaidRows = state.consignado.filter(r => !r.pago);
+      const remCount = unpaidRows.length;
+      const installmentVal = 518.35;
+      const remNominal = remCount * installmentVal;
+      const payoffTable = unpaidRows.reduce((acc, r) => acc + (r.amort || 0), 0);
+      let payoffAdjusted = 0;
+      for (let i = 0; i < remCount; i++) {
+        payoffAdjusted += AMORT_CURVE_87[i] || unpaidRows[i]?.amort || 0;
+      }
+      return {
+        paidCount: paidRows.length,
+        paidPortCount: paidRows.filter(r => r.port !== null).length,
+        remCount,
+        installmentVal: remCount > 0 ? installmentVal : 0,
+        remNominal,
+        payoffTable,
+        payoffAdjusted
+      };
+    }
+
+    function getHousingScenarios(cycles, costPerKm, onewayDist, tollOneway, avgPaxIda, avgPaxVolta, paxPrice, detourKm) {
+      const rentMonthly = parseFloat(document.getElementById('inp-rent-monthly').value) || 0;
+      const rentBills = parseFloat(document.getElementById('inp-rent-bills').value) || 0;
+      const rentDistKm = parseFloat(document.getElementById('inp-rent-dist-km').value) || 0;
+
+      const hotelNightly = parseFloat(document.getElementById('inp-hotel-nightly').value) || 0;
+      const hotelNights = parseFloat(document.getElementById('inp-hotel-nights').value) || 0;
+      const hotelDistKm = parseFloat(document.getElementById('inp-hotel-dist-km').value) || 0;
+
+      const moveHousingDiff = parseFloat(document.getElementById('inp-move-housing-diff').value) || 0;
+      const moveCwbTrips = parseFloat(document.getElementById('inp-move-cwb-trips').value) || 0;
+      const moveLocalKm = parseFloat(document.getElementById('inp-move-local-km').value) || 0;
+
+      const bat = {
+        id: 'batalhao',
+        title: '1. Dormir no Batalhão (Atual)',
+        housingCost: 0,
+        extraLocalKm: 0,
+        extraLocalFuelCost: 0,
+        roadSavedOrAdded: 0,
+        totalExtraCost: 0,
+        desc: 'Custo zero de aluguel e zero deslocamento no intervalo de 12h.'
+      };
+
+      const kitnetExtraKm = 2 * rentDistKm * cycles;
+      const kitnetFuelCost = kitnetExtraKm * costPerKm;
+      const kitnetTotal = rentMonthly + rentBills + kitnetFuelCost;
+      const kitnet = {
+        id: 'kitnet',
+        title: '2. Alugar Kitnet / Quarto Fixo',
+        housingCost: rentMonthly + rentBills,
+        extraLocalKm: kitnetExtraKm,
+        extraLocalFuelCost: kitnetFuelCost,
+        roadSavedOrAdded: 0,
+        totalExtraCost: kitnetTotal,
+        perNightEffective: cycles > 0 ? kitnetTotal / cycles : 0,
+        desc: `Aluguel + contas (${fmtBRL(rentMonthly + rentBills)}) + ${fmtNum(kitnetExtraKm, 0)} km/mês de deslocamento em Joinville.`
+      };
+
+      const hotelStayCost = hotelNightly * hotelNights;
+      const hotelExtraKm = 2 * hotelDistKm * hotelNights;
+      const hotelFuelCost = hotelExtraKm * costPerKm;
+      const hotelTotal = hotelStayCost + hotelFuelCost;
+      const hotel = {
+        id: 'hotel',
+        title: '3. Pernoite Avulso (Hotel/Airbnb)',
+        housingCost: hotelStayCost,
+        extraLocalKm: hotelExtraKm,
+        extraLocalFuelCost: hotelFuelCost,
+        roadSavedOrAdded: 0,
+        totalExtraCost: hotelTotal,
+        perNightEffective: hotelNights > 0 ? hotelTotal / hotelNights : 0,
+        desc: `${fmtNum(hotelNights, 1)} diárias × ${fmtBRL(hotelNightly)} + ${fmtNum(hotelExtraKm, 0)} km/mês locais.`
+      };
+
+      const localCommuteKm = cycles * 2 * (2 * moveLocalKm);
+      const localCommuteFuel = localCommuteKm * costPerKm;
+      const avoidedCycles = Math.max(0, cycles - moveCwbTrips);
+      const roadFuelTollPerCycle = ((onewayDist + detourKm) * 2 * costPerKm) + (tollOneway * 2);
+      const blaRevPerCycle = (avgPaxIda + avgPaxVolta) * paxPrice;
+      const netRoadSaved = avoidedCycles * (roadFuelTollPerCycle - blaRevPerCycle);
+      const moveTotalImpact = moveHousingDiff + localCommuteFuel - netRoadSaved;
+
+      const mudar = {
+        id: 'mudar',
+        title: '4. Mudar para Joinville',
+        housingCost: moveHousingDiff,
+        extraLocalKm: localCommuteKm,
+        extraLocalFuelCost: localCommuteFuel,
+        roadSavedOrAdded: -netRoadSaved,
+        totalExtraCost: moveTotalImpact,
+        desc: `Elimina ${fmtNum(avoidedCycles, 1)} viagens CWB↔JLLE/mês (${fmtNum(avoidedCycles * 2 * onewayDist, 0)} km a menos de BR-376).`
+      };
+
+      return { batalhao: bat, kitnet, hotel, mudar };
+    }
+
+    function updateSim() {
+      const cycles = parseFloat(document.getElementById('inp-cycles').value) || 7.5;
+      const onewayDist = parseFloat(document.getElementById('inp-dist-oneway').value) || 140;
+      const tollOneway = parseFloat(document.getElementById('inp-toll-oneway').value) || 5.70;
+      const kmCuritibaPerCycle = parseFloat(document.getElementById('inp-km-curitiba').value) || 0;
+
+      const consumption = parseFloat(document.getElementById('inp-consumption').value) || 12.3;
+      const fuelPrice = parseFloat(document.getElementById('inp-fuel-price').value) || 6.29;
+      const maintMonthly = parseFloat(document.getElementById('inp-maint-monthly').value) || 0;
+      const fixedCarMonthly = parseFloat(document.getElementById('inp-fixed-car-monthly').value) || 0;
+
+      const paxIda = parseFloat(document.getElementById('inp-pax-ida').value) || 0;
+      const paxVolta = parseFloat(document.getElementById('inp-pax-volta').value) || 0;
+      const paxPrice = parseFloat(document.getElementById('inp-pax-price').value) || 40;
+      const detourKm = parseFloat(document.getElementById('inp-pax-detour-km').value) || 0;
+      const activeHousingId = document.getElementById('sel-active-housing').value || 'batalhao';
+
+      document.getElementById('val-cycles').textContent = `${fmtNum(cycles, 1)} ciclos (${fmtNum(cycles * 2, 0)} trechos)`;
+      document.getElementById('label-cycles-badge').textContent = `${fmtNum(cycles, 1)} ciclos/mês`;
+      document.getElementById('val-dist-oneway').textContent = `${fmtNum(onewayDist, 0)} km/trecho`;
+      document.getElementById('val-consumption').textContent = `${fmtNum(consumption, 1)} km/l`;
+      document.getElementById('val-fuel-price').textContent = `${fmtBRL(fuelPrice)}/l`;
+      document.getElementById('val-pax-ida').textContent = `${fmtNum(paxIda, 1)} pass.`;
+      document.getElementById('val-pax-volta').textContent = `${fmtNum(paxVolta, 1)} pass.`;
+
+      const costPerKm = fuelPrice / consumption;
+      document.getElementById('label-cost-per-km').textContent = `${fmtBRL(costPerKm)}/km`;
+
+      const effDetourIda = paxIda > 0 ? detourKm : 0;
+      const effDetourVolta = paxVolta > 0 ? detourKm : 0;
+      const kmIda = onewayDist + effDetourIda;
+      const kmVolta = onewayDist + effDetourVolta;
+      const kmCycleRoad = kmIda + kmVolta;
+      const kmMonthRoad = kmCycleRoad * cycles;
+      const kmMonthCuritiba = kmCuritibaPerCycle * cycles;
+
+      const housings = getHousingScenarios(cycles, costPerKm, onewayDist, tollOneway, paxIda, paxVolta, paxPrice, detourKm);
+      const selectedHousing = housings[activeHousingId] || housings.batalhao;
+
+      const totalKmMonth = kmMonthRoad + kmMonthCuritiba + selectedHousing.extraLocalKm;
+      const fuelRoadOneway = ((kmIda + kmVolta) / 2) * costPerKm;
+      const fuelRoadCycle = kmCycleRoad * costPerKm;
+      const fuelMonthTotal = (kmMonthRoad + kmMonthCuritiba + selectedHousing.extraLocalKm) * costPerKm;
+
+      const tollCycle = tollOneway * 2;
+      const tollMonth = tollCycle * cycles;
+
+      const blaRevIda = paxIda * paxPrice;
+      const blaRevVolta = paxVolta * paxPrice;
+      const blaRevCycle = blaRevIda + blaRevVolta;
+      const blaRevMonth = blaRevCycle * cycles;
+
+      const consig = getConsignadoStats();
+      const fixedAndMaintMonth = consig.installmentVal + maintMonthly + fixedCarMonthly;
+
+      const housingBaseCostMonth = selectedHousing.housingCost + (selectedHousing.id === 'mudar' ? selectedHousing.roadSavedOrAdded : 0);
+      const netTotalMonth = fuelMonthTotal + tollMonth + fixedAndMaintMonth + housingBaseCostMonth - blaRevMonth;
+      const netPerCycle = cycles > 0 ? netTotalMonth / cycles : 0;
+
+      document.getElementById('kpi-fuel-toll').textContent = `${fmtBRL(fuelMonthTotal + tollMonth)}/mês`;
+      document.getElementById('kpi-km-month').textContent = `${fmtNum(totalKmMonth, 0)} km/mês (${fmtNum(totalKmMonth / consumption, 0)} L)`;
+      document.getElementById('kpi-blablacar-rev').textContent = `+ ${fmtBRL(blaRevMonth)}/mês`;
+      document.getElementById('kpi-blablacar-detail').textContent = `Média ${fmtNum((paxIda + paxVolta)/2, 1)} pass./trecho (${fmtNum((paxIda + paxVolta)*cycles, 0)}/mês)`;
+      document.getElementById('kpi-fixed-maint').textContent = `${fmtBRL(fixedAndMaintMonth + selectedHousing.housingCost)}/mês`;
+      document.getElementById('kpi-consignado-sub').textContent = `Consig: ${fmtBRL(consig.installmentVal)} (${consig.remCount} rest.)`;
+      document.getElementById('kpi-net-total').textContent = `${fmtBRL(netTotalMonth)}/mês`;
+      document.getElementById('kpi-net-per-cycle').textContent = `${fmtBRL(netPerCycle)} por escala (4d)`;
+
+      const raioxRows = [
+        { label: `Combustível Estrada (${fmtNum(kmIda,0)} km/trecho)`, t1: fuelRoadOneway, tc: fuelRoadCycle, tm: kmMonthRoad * costPerKm, cls: '' },
+        { label: `Pedágio BR-376`, t1: tollOneway, tc: tollCycle, tm: tollMonth, cls: '' },
+        { label: `Rodagem Curitiba (60h) + Joinville (12h)`, t1: ((kmMonthCuritiba + selectedHousing.extraLocalKm)/(cycles*2))*costPerKm, tc: ((kmMonthCuritiba + selectedHousing.extraLocalKm)/cycles)*costPerKm, tm: (kmMonthCuritiba + selectedHousing.extraLocalKm)*costPerKm, cls: '' },
+        { label: `Receita BlaBlaCar (Caronas)`, t1: -blaRevCycle/2, tc: -blaRevCycle, tm: -blaRevMonth, cls: 'text-emerald-500 font-semibold' },
+        { label: `Saldo Operacional da Viagem`, t1: (fuelRoadOneway + tollOneway) - (blaRevCycle/2), tc: (fuelRoadCycle + tollCycle) - blaRevCycle, tm: (kmMonthRoad * costPerKm + tollMonth) - blaRevMonth, cls: 'font-bold border-t' },
+        { label: `Consignado Bradesco (${consig.remCount}/119 rest.)`, t1: consig.installmentVal/(cycles*2), tc: consig.installmentVal/cycles, tm: consig.installmentVal, cls: 'text-rose-500' },
+        { label: `Manutenção + Seguro + IPVA`, t1: (maintMonthly + fixedCarMonthly)/(cycles*2), tc: (maintMonthly + fixedCarMonthly)/cycles, tm: maintMonthly + fixedCarMonthly, cls: '' },
+        { label: `Estadia Joinville (${selectedHousing.title.split('.')[1].trim()})`, t1: housingBaseCostMonth/(cycles*2), tc: housingBaseCostMonth/cycles, tm: housingBaseCostMonth, cls: '' },
+        { label: `CUSTO LÍQUIDO FINAL`, t1: netTotalMonth/(cycles*2), tc: netPerCycle, tm: netTotalMonth, cls: 'font-bold text-blue-500 bg-blue-500/5' }
+      ];
+
+      document.getElementById('tbody-raiox').innerHTML = raioxRows.map(r => `
+        <tr class="${r.cls}">
+          <td class="py-2">${r.label}</td>
+          <td class="py-2 px-1 text-right">${fmtBRL(r.t1)}</td>
+          <td class="py-2 px-1 text-right">${fmtBRL(r.tc)}</td>
+          <td class="py-2 text-right">${fmtBRL(r.tm)}</td>
+        </tr>
+      `).join('');
+
+      const roadDirectCostMonth = (kmMonthRoad * costPerKm) + tollMonth;
+      const covPct = roadDirectCostMonth > 0 ? (blaRevMonth / roadDirectCostMonth) * 100 : 0;
+      document.getElementById('val-coverage-pct').textContent = `${fmtNum(covPct, 0)}%`;
+      document.getElementById('bar-coverage').style.width = `${Math.min(100, covPct)}%`;
+      const onewayDirect = (onewayDist + detourKm) * costPerKm + tollOneway;
+      const breakEvenPax = paxPrice > 0 ? onewayDirect / paxPrice : 0;
+      document.getElementById('txt-breakeven-insight').textContent =
+        `Cada trecho de ${onewayDist + detourKm} km custa ${fmtBRL(onewayDirect)} (combustível + pedágio). O equilíbrio é ${fmtNum(breakEvenPax, 2)} passageiros/trecho. Com 2 passageiros (${fmtBRL(2*paxPrice)}), a viagem já se paga!`;
+
+      document.getElementById('grid-pax-scenarios').innerHTML = [0, 1, 2, 3].map(p => {
+        const kmP = onewayDist + (p > 0 ? detourKm : 0);
+        const costP = kmP * costPerKm + tollOneway;
+        const revP = p * paxPrice;
+        const netP = revP - costP;
+        const monthlyNetP = netP * cycles * 2;
+        const isPos = netP >= 0;
+        return `
+          <div class="p-2.5 rounded-lg border ${isPos ? 'border-emerald-500/40 bg-emerald-500/10' : 'bg-[var(--background)]'}">
+            <div class="text-xs font-bold">${p} ${p === 1 ? 'Passageiro' : 'Passageiros'}</div>
+            <div class="text-xs text-[var(--muted-foreground)]">Recebe: ${fmtBRL(revP)}</div>
+            <div class="text-sm font-bold mt-1 ${isPos ? 'text-emerald-500' : 'text-rose-500'}">
+              ${isPos ? '+' : ''}${fmtBRL(netP)}/trecho
+            </div>
+            <div class="text-xs text-[var(--muted-foreground)]">
+              ${isPos ? 'Sobra' : 'Custo'}: ${fmtBRL(Math.abs(monthlyNetP))}/mês
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      document.getElementById('box-housing-quick-summary').innerHTML = `
+        <div class="font-semibold text-[var(--foreground)]">${selectedHousing.title}</div>
+        <div class="mt-0.5">${selectedHousing.desc}</div>
+        <div class="mt-1 font-semibold ${selectedHousing.totalExtraCost <= 0 ? 'text-emerald-500' : 'text-amber-500'}">
+          Impacto mensal vs. dormir no Batalhão: ${selectedHousing.totalExtraCost > 0 ? '+' : ''}${fmtBRL(selectedHousing.totalExtraCost)}/mês
+        </div>
+      `;
+
+      renderHousingTab(housings, netTotalMonth - selectedHousing.totalExtraCost);
+      renderModalComparison({
+        cycles, onewayDist, tollOneway, kmCuritibaPerCycle,
+        consumption, fuelPrice, maintMonthly, fixedCarMonthly,
+        paxIda, paxVolta, paxPrice, detourKm,
+        totalKmMonth, kmMonthRoad, kmMonthCuritiba,
+        selectedHousing, consig, peugeotNetMonthly: netTotalMonth
+      });
+      renderConsignado();
+      saveState();
+    }
+
+    function renderHousingTab(housings, basePeugeotAtBatalhao) {
+      const activeId = document.getElementById('sel-active-housing').value;
+      document.getElementById('grid-housing-cards').innerHTML = Object.values(housings).map(h => {
+        const isSel = h.id === activeId;
+        const totalWithCar = basePeugeotAtBatalhao + h.totalExtraCost;
+        return `
+          <div class="p-4 rounded-xl border ${isSel ? 'border-blue-500 bg-blue-500/5' : 'bg-[var(--card)]'} flex flex-col justify-between space-y-3">
+            <div class="space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold uppercase px-2 py-0.5 rounded ${isSel ? 'bg-blue-600 text-white' : 'bg-[var(--background)] text-[var(--muted-foreground)]'}">
+                  ${isSel ? 'Selecionado no Simulador' : 'Cenário'}
+                </span>
+              </div>
+              <h3 class="font-bold text-base">${h.title}</h3>
+              <p class="text-xs text-[var(--muted-foreground)]">${h.desc}</p>
+              <div class="pt-2 border-t space-y-1 text-xs">
+                <div class="flex justify-between">
+                  <span class="text-[var(--muted-foreground)]">Aluguel / Diárias / Moradia:</span>
+                  <span class="font-semibold">${fmtBRL(h.housingCost)}/mês</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-[var(--muted-foreground)]">Combustível local em Joinville:</span>
+                  <span class="font-semibold">${fmtBRL(h.extraLocalFuelCost)}/mês</span>
+                </div>
+                ${h.roadSavedOrAdded !== 0 ? `
+                <div class="flex justify-between">
+                  <span class="text-[var(--muted-foreground)]">Economia líquida estrada:</span>
+                  <span class="font-semibold text-emerald-500">${fmtBRL(h.roadSavedOrAdded)}/mês</span>
+                </div>` : ''}
+                ${h.perNightEffective ? `
+                <div class="flex justify-between">
+                  <span class="text-[var(--muted-foreground)]">Custo por descanso de 12h:</span>
+                  <span class="font-semibold text-amber-500">${fmtBRL(h.perNightEffective)}/noite</span>
+                </div>` : ''}
+              </div>
+            </div>
+            <div class="pt-3 border-t space-y-2">
+              <div class="flex justify-between items-baseline">
+                <span class="text-xs text-[var(--muted-foreground)]">Acréscimo vs Batalhão:</span>
+                <span class="text-sm font-bold ${h.totalExtraCost <= 0 ? 'text-emerald-500' : 'text-amber-500'}">
+                  ${h.totalExtraCost > 0 ? '+' : ''}${fmtBRL(h.totalExtraCost)}/mês
+                </span>
+              </div>
+              <div class="flex justify-between items-baseline">
+                <span class="text-xs font-medium">Total Mensal (Carro + Estadia):</span>
+                <span class="text-base font-bold text-blue-500">${fmtBRL(totalWithCar)}</span>
+              </div>
+              <button onclick="document.getElementById('sel-active-housing').value='${h.id}'; updateSim();" class="w-full py-1.5 rounded-lg text-xs font-semibold border ${isSel ? 'border-blue-500 text-blue-500' : 'bg-[var(--background)]'}">
+                ${isSel ? '✓ Cenário Ativo' : 'Ativar este Cenário'}
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function applyCarPreset(preset) {
+      const presets = {
+        onix:     { name: "Hatch 1.0 (Onix / HB20 / Polo)", price: 62000, kml: 15.8, fuel: 6.15, maint: 180, fixed: 390, bla: "yes" },
+        kwid:     { name: "Subcompacto (Kwid / Mobi 1.0)",  price: 48000, kml: 16.5, fuel: 6.15, maint: 160, fixed: 310, bla: "yes" },
+        turbo:    { name: "1.0 Turbo (Polo TSI / Onix T.)", price: 78000, kml: 16.2, fuel: 6.15, maint: 220, fixed: 460, bla: "yes" },
+        eletrico: { name: "BYD Dolphin Mini (100% Elétrico)", price: 115000, kml: 7.5, fuel: 0.85, maint: 90, fixed: 420, bla: "yes" },
+        moto:     { name: "Moto 250cc (Fazer / Twister)",   price: 24000, kml: 32.0, fuel: 6.15, maint: 110, fixed: 120, bla: "no"  }
+      };
+      const p = presets[preset];
+      if (!p) return;
+      document.getElementById('inp-newcar-name').value = p.name;
+      document.getElementById('inp-newcar-price').value = p.price;
+      document.getElementById('inp-newcar-consumption').value = p.kml;
+      document.getElementById('inp-newcar-fuelprice').value = p.fuel;
+      document.getElementById('inp-newcar-maint').value = p.maint;
+      document.getElementById('inp-newcar-fixed').value = p.fixed;
+      document.getElementById('sel-newcar-blablacar').value = p.bla;
+      updateSim();
+    }
+
+    function calcPMT(principal, monthlyRatePct, months) {
+      if (principal <= 0 || months <= 0) return 0;
+      const r = (monthlyRatePct || 0) / 100;
+      if (r === 0) return principal / months;
+      return principal * (r * Math.pow(1 + r, months)) / (Math.pow(1 + r, months) - 1);
+    }
+
+    function renderModalComparison(ctx) {
+      const fipePeugeot = parseFloat(document.getElementById('inp-peugeot-fipe').value) || 35500;
+      const strategy = document.getElementById('sel-consig-strategy').value;
+
+      const newName = document.getElementById('inp-newcar-name').value || "Carro Novo";
+      const newPrice = parseFloat(document.getElementById('inp-newcar-price').value) || 62000;
+      const newKml = parseFloat(document.getElementById('inp-newcar-consumption').value) || 15.8;
+      const newFuelPrice = parseFloat(document.getElementById('inp-newcar-fuelprice').value) || 6.15;
+      const newMaint = parseFloat(document.getElementById('inp-newcar-maint').value) || 180;
+      const newFixed = parseFloat(document.getElementById('inp-newcar-fixed').value) || 390;
+      const newBlaAllowed = document.getElementById('sel-newcar-blablacar').value === 'yes';
+
+      const extraDown = parseFloat(document.getElementById('inp-extra-downpayment').value) || 0;
+      const loanMonths = parseFloat(document.getElementById('inp-newloan-months').value) || 48;
+      const loanRate = parseFloat(document.getElementById('inp-newloan-rate').value) || 1.45;
+
+      const busTicket = parseFloat(document.getElementById('inp-bus-ticket').value) || 55;
+      const busUber = parseFloat(document.getElementById('inp-bus-uber').value) || 22;
+      const ridePassenger = parseFloat(document.getElementById('inp-ride-passenger').value) || 55;
+
+      let payoffUsed = 0;
+      let consigMonthlyAfterSwap = ctx.consig.installmentVal;
+      if (strategy === 'payoff_current') {
+        payoffUsed = ctx.consig.payoffAdjusted;
+        consigMonthlyAfterSwap = 0;
+      } else if (strategy === 'payoff_table') {
+        payoffUsed = ctx.consig.payoffTable;
+        consigMonthlyAfterSwap = 0;
+      }
+
+      const netEquityFromPeugeot = fipePeugeot - payoffUsed;
+      const totalDownPayment = netEquityFromPeugeot + extraDown;
+      const amountToFinance = Math.max(0, newPrice - totalDownPayment);
+      const cashLeftover = Math.max(0, totalDownPayment - newPrice);
+      const newLoanPMT = calcPMT(amountToFinance, loanRate, loanMonths);
+
+      document.getElementById('box-peugeot-equity').innerHTML = `
+        <div class="flex justify-between"><span>Venda Peugeot 208:</span><span class="font-bold">${fmtBRL(fipePeugeot)}</span></div>
+        <div class="flex justify-between"><span>Quitação Consignado:</span><span class="font-bold text-rose-500">- ${fmtBRL(payoffUsed)}</span></div>
+        <div class="flex justify-between border-t pt-1">
+          <span>Sobra Líquida p/ Entrada:</span>
+          <span class="font-bold text-emerald-500">${fmtBRL(netEquityFromPeugeot)}</span>
+        </div>
+        <div class="flex justify-between">
+          <span>Valor a Financiar no Novo:</span>
+          <span class="font-bold">${fmtBRL(amountToFinance)} (${fmtBRL(newLoanPMT)}/mês)</span>
+        </div>
+      `;
+
+      const newCostPerKm = newFuelPrice / newKml;
+      const newDetourIda = (newBlaAllowed && ctx.paxIda > 0) ? ctx.detourKm : 0;
+      const newDetourVolta = (newBlaAllowed && ctx.paxVolta > 0) ? ctx.detourKm : 0;
+      const newKmMonth = ((ctx.onewayDist + newDetourIda + ctx.onewayDist + newDetourVolta) * ctx.cycles) + ctx.kmMonthCuritiba + ctx.selectedHousing.extraLocalKm;
+      const newFuelMonth = newKmMonth * newCostPerKm;
+      const newTollMonth = (newBlaAllowed ? ctx.tollOneway : ctx.tollOneway * 0.5) * 2 * ctx.cycles;
+      const newBlaRevMonth = newBlaAllowed ? ((ctx.paxIda + ctx.paxVolta) * ctx.paxPrice * ctx.cycles) : 0;
+      const newHousingCost = ctx.selectedHousing.housingCost + (ctx.selectedHousing.id === 'mudar' ? ctx.selectedHousing.roadSavedOrAdded : 0);
+
+      const newTotalMonth = newFuelMonth + newTollMonth + consigMonthlyAfterSwap + newLoanPMT + newMaint + newFixed + newHousingCost - newBlaRevMonth;
+
+      const busTripsMonth = ctx.cycles * 2;
+      const busTransportMonth = busTripsMonth * (busTicket + busUber) + (ctx.cycles * 40);
+      const busTotalMonth = busTransportMonth + consigMonthlyAfterSwap + ctx.selectedHousing.housingCost;
+
+      const rideTransportMonth = busTripsMonth * ridePassenger + (ctx.cycles * 40);
+      const rideTotalMonth = rideTransportMonth + consigMonthlyAfterSwap + ctx.selectedHousing.housingCost;
+
+      document.getElementById('th-newcar-col').textContent = `2. ${newName}`;
+
+      const modals = [
+        {
+          title: "1. Peugeot 208 Allure (Atual)",
+          subtitle: `${fmtNum(ctx.consumption,1)} km/l • Consignado R$ 518,35`,
+          total: ctx.peugeotNetMonthly,
+          diff: 0,
+          fuelToll: (ctx.totalKmMonth * (ctx.fuelPrice/ctx.consumption)) + (ctx.tollOneway * 2 * ctx.cycles),
+          blaRev: (ctx.paxIda + ctx.paxVolta) * ctx.paxPrice * ctx.cycles,
+          debt: ctx.consig.installmentVal,
+          maintFixed: ctx.maintMonthly + ctx.fixedCarMonthly,
+          badge: "Base Atual"
+        },
+        {
+          title: `2. ${newName}`,
+          subtitle: `${fmtNum(newKml,1)} km/un • Financ: ${fmtBRL(newLoanPMT)}`,
+          total: newTotalMonth,
+          diff: newTotalMonth - ctx.peugeotNetMonthly,
+          fuelToll: newFuelMonth + newTollMonth,
+          blaRev: newBlaRevMonth,
+          debt: consigMonthlyAfterSwap + newLoanPMT,
+          maintFixed: newMaint + newFixed,
+          badge: newTotalMonth < ctx.peugeotNetMonthly ? "Mais Econômico" : "Mais Caro"
+        },
+        {
+          title: "3. Ônibus + Uber (Vender Carro)",
+          subtitle: `${busTripsMonth} viagens/mês • Sem BlaBlaCar`,
+          total: busTotalMonth,
+          diff: busTotalMonth - ctx.peugeotNetMonthly,
+          fuelToll: busTransportMonth,
+          blaRev: 0,
+          debt: consigMonthlyAfterSwap,
+          maintFixed: 0,
+          badge: cashLeftover > 0 ? `Sobra ${fmtBRL(netEquityFromPeugeot)} livre` : "Sem custos de oficina"
+        },
+        {
+          title: "4. Passageiro BlaBlaCar (Sem Carro)",
+          subtitle: `${busTripsMonth} caronas/mês + Uber local`,
+          total: rideTotalMonth,
+          diff: rideTotalMonth - ctx.peugeotNetMonthly,
+          fuelToll: rideTransportMonth,
+          blaRev: 0,
+          debt: consigMonthlyAfterSwap,
+          maintFixed: 0,
+          badge: "Sem veículo próprio"
+        }
+      ];
+
+      document.getElementById('grid-modal-comparison').innerHTML = modals.map((m, idx) => {
+        const isSaving = m.diff < -0.5;
+        const isMoreExp = m.diff > 0.5;
+        return `
+          <div class="p-4 rounded-xl bg-[var(--card)] border ${idx === 0 ? 'border-blue-500/50' : ''} flex flex-col justify-between space-y-3">
+            <div>
+              <span class="text-xs px-2 py-0.5 rounded font-semibold ${isSaving ? 'bg-emerald-500/15 text-emerald-500' : isMoreExp ? 'bg-rose-500/15 text-rose-500' : 'bg-blue-500/15 text-blue-500'}">
+                ${m.badge}
+              </span>
+              <h3 class="font-bold text-base mt-2">${m.title}</h3>
+              <p class="text-xs text-[var(--muted-foreground)]">${m.subtitle}</p>
+            </div>
+            <div class="space-y-1 text-xs border-t pt-2.5">
+              <div class="flex justify-between"><span>Combustível/Passagens + Pedágio:</span><span class="font-medium">${fmtBRL(m.fuelToll)}</span></div>
+              <div class="flex justify-between"><span>Receita BlaBlaCar:</span><span class="font-medium text-emerald-500">- ${fmtBRL(m.blaRev)}</span></div>
+              <div class="flex justify-between"><span>Consignado + Parcela Carro:</span><span class="font-medium text-rose-500">${fmtBRL(m.debt)}</span></div>
+              <div class="flex justify-between"><span>Manutenção + Seguro + IPVA:</span><span class="font-medium">${fmtBRL(m.maintFixed)}</span></div>
+            </div>
+            <div class="border-t pt-2.5">
+              <div class="text-xs text-[var(--muted-foreground)]">Desembolso Mensal Líquido</div>
+              <div class="text-lg font-bold">${fmtBRL(m.total)}/mês</div>
+              <div class="text-xs font-semibold mt-0.5 ${isSaving ? 'text-emerald-500' : isMoreExp ? 'text-rose-500' : 'text-[var(--muted-foreground)]'}">
+                ${idx === 0 ? 'Referência atual' : (isSaving ? `Economia de ${fmtBRL(Math.abs(m.diff))}/mês` : `Gasta +${fmtBRL(m.diff)}/mês vs Peugeot`)}
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      const rows = [
+        { name: "Combustível / Energia / Passagens + Pedágio", v: modals.map(m => fmtBRL(m.fuelToll)) },
+        { name: "Receita Caronas BlaBlaCar", v: modals.map(m => m.blaRev > 0 ? `- ${fmtBRL(m.blaRev)}` : "R$ 0,00"), cls: "text-emerald-500 font-medium" },
+        { name: "Consignado + Financiamento", v: modals.map(m => fmtBRL(m.debt)) },
+        { name: "Manutenção + Seguro + IPVA", v: modals.map(m => fmtBRL(m.maintFixed)) },
+        { name: "Estadia Joinville selecionada", v: modals.map(() => fmtBRL(ctx.selectedHousing.housingCost)) },
+        { name: "TOTAL LÍQUIDO POR MÊS", v: modals.map(m => fmtBRL(m.total)), cls: "font-bold text-blue-500 border-t" },
+        { name: "Diferença em 1 Ano (12 meses)", v: modals.map((m, i) => i === 0 ? "—" : `${m.diff > 0 ? '+' : ''}${fmtBRL(m.diff * 12)}`), cls: "font-semibold" },
+        { name: "Diferença em 3 Anos (36 meses)", v: modals.map((m, i) => i === 0 ? "—" : `${m.diff > 0 ? '+' : ''}${fmtBRL(m.diff * 36)}`), cls: "font-semibold" }
+      ];
+
+      document.getElementById('tbody-modal-comparison').innerHTML = rows.map(r => `
+        <tr class="${r.cls || ''}">
+          <td class="py-2">${r.name}</td>
+          <td class="py-2 px-2 text-right">${r.v[0]}</td>
+          <td class="py-2 px-2 text-right">${r.v[1]}</td>
+          <td class="py-2 px-2 text-right">${r.v[2]}</td>
+          <td class="py-2 text-right">${r.v[3]}</td>
+        </tr>
+      `).join('');
+    }
+
+    function filterConsigTable(mode) {
+      state.consigFilter = mode;
+      ['all', 'unpaid', 'paid'].forEach(m => {
+        const b = document.getElementById('btn-filter-' + m);
+        if (b) {
+          b.className = m === mode
+            ? "text-xs px-2.5 py-1 rounded border bg-blue-600 text-white"
+            : "text-xs px-2.5 py-1 rounded border bg-[var(--background)]";
+        }
+      });
+      renderConsignado();
+    }
+
+    function toggleConsigRow(parcNumber) {
+      const row = state.consignado.find(r => r.parc === parcNumber);
+      if (row) {
+        row.pago = !row.pago;
+        updateSim();
+      }
+    }
+
+    function renderConsignado() {
+      const stats = getConsignadoStats();
+      document.getElementById('consig-badge-progress').textContent = `${stats.paidPortCount}/119 Pagas`;
+      document.getElementById('consig-paid-count').textContent = `${stats.paidCount} de 120`;
+      document.getElementById('consig-paid-sum').textContent = `${fmtBRL(stats.paidCount * 518.35)} pagos`;
+      document.getElementById('consig-rem-count').textContent = `${stats.remCount} parcelas`;
+      document.getElementById('consig-rem-nominal').textContent = `${fmtBRL(stats.remNominal)} nominal`;
+      document.getElementById('consig-payoff-adjusted').textContent = fmtBRL(stats.payoffAdjusted);
+      document.getElementById('consig-disc-adjusted').textContent = `Desconto: ${fmtBRL(stats.remNominal - stats.payoffAdjusted)}`;
+      document.getElementById('consig-payoff-table').textContent = fmtBRL(stats.payoffTable);
+      document.getElementById('consig-disc-table').textContent = `Desconto: ${fmtBRL(stats.remNominal - stats.payoffTable)}`;
+
+      const budget = parseFloat(document.getElementById('inp-amort-budget').value) || 0;
+      const mode = document.getElementById('sel-amort-mode').value;
+      const unpaidAscByInv = state.consignado
+        .filter(r => !r.pago)
+        .map((r, idx) => {
+          const adjAmort = AMORT_CURVE_87[idx] || r.amort || 518.35;
+          return { ...r, effectiveAmort: mode === 'adjusted' ? adjAmort : (r.amort || adjAmort) };
+        })
+        .sort((a, b) => a.inv - b.inv);
+
+      let spent = 0;
+      let countEliminated = 0;
+      for (const item of unpaidAscByInv) {
+        if (spent + item.effectiveAmort <= budget) {
+          spent += item.effectiveAmort;
+          countEliminated++;
+        } else {
+          break;
+        }
+      }
+      const nominalSaved = countEliminated * 518.35;
+      const interestSaved = nominalSaved - spent;
+
+      document.getElementById('box-amort-result').innerHTML = `
+        <div class="font-bold text-sm text-emerald-500">Você quita ${countEliminated} parcelas finais (Inversa 1 até ${countEliminated || 0})!</div>
+        <div>Valor utilizado: <b>${fmtBRL(spent)}</b> (sobra ${fmtBRL(Math.max(0, budget - spent))})</div>
+        <div>Valor nominal eliminado: <b>${fmtBRL(nominalSaved)}</b> • <span class="text-emerald-500 font-bold">Economia real de juros: ${fmtBRL(interestSaved)}</span></div>
+      `;
+
+      let rows = state.consignado;
+      if (state.consigFilter === 'unpaid') rows = rows.filter(r => !r.pago);
+      if (state.consigFilter === 'paid') rows = rows.filter(r => r.pago);
+
+      document.getElementById('tbody-consignado').innerHTML = rows.map(r => `
+        <tr class="${r.pago ? 'opacity-65' : 'font-medium'}">
+          <td class="py-1.5 px-2.5">
+            <button onclick="toggleConsigRow(${r.parc})" class="px-2 py-0.5 rounded text-xs font-bold ${r.pago ? 'bg-emerald-500/20 text-emerald-500' : 'bg-rose-500/20 text-rose-500'}">
+              ${r.pago ? 'SIM' : 'NÃO'}
+            </button>
+          </td>
+          <td class="py-1.5 px-2.5">${r.data}</td>
+          <td class="py-1.5 px-2.5 text-center">${r.inv}</td>
+          <td class="py-1.5 px-2.5 text-center">${r.parc}</td>
+          <td class="py-1.5 px-2.5 text-center">${r.port ?? '-'}</td>
+          <td class="py-1.5 px-2.5 text-right">${fmtBRL(r.val)}</td>
+          <td class="py-1.5 px-2.5 text-right font-semibold">${r.amort > 0 ? fmtBRL(r.amort) : '—'}</td>
+        </tr>
+      `).join('');
+    }
+
+    function renderTrips() {
+      document.getElementById('badge-trips-count').textContent = state.trips.length;
+      let totalKm = 0, totalCost = 0, totalRev = 0, totalPax = 0;
+
+      const rowsHtml = state.trips.slice().reverse().map(t => {
+        const fuelCost = (t.km / (t.kml || 12.3)) * (t.fuelPrice || 6.29);
+        const directCost = fuelCost + (t.toll || 0);
+        const rev = (t.pax || 0) * (t.paxPrice || 40);
+        const net = rev - directCost;
+
+        totalKm += Number(t.km) || 0;
+        totalCost += directCost;
+        totalRev += rev;
+        totalPax += Number(t.pax) || 0;
+
+        return `
+          <tr>
+            <td class="py-2 px-2 whitespace-nowrap">${t.date}</td>
+            <td class="py-2 px-2">
+              <div class="font-medium">${t.route}</div>
+              ${t.notes ? `<div class="text-xs text-[var(--muted-foreground)]">${t.notes}</div>` : ''}
+            </td>
+            <td class="py-2 px-2 text-right whitespace-nowrap">${fmtNum(t.km,0)} km (${fmtNum(t.kml,1)} km/l)</td>
+            <td class="py-2 px-2 text-center font-bold">${t.pax} × ${fmtBRL(t.paxPrice)}</td>
+            <td class="py-2 px-2 text-right text-amber-500">${fmtBRL(directCost)}</td>
+            <td class="py-2 px-2 text-right text-emerald-500 font-semibold">+ ${fmtBRL(rev)}</td>
+            <td class="py-2 px-2 text-right font-bold ${net >= 0 ? 'text-emerald-500' : 'text-rose-500'}">${net >= 0 ? '+' : ''}${fmtBRL(net)}</td>
+            <td class="py-2 px-2 text-center">
+              <button onclick="deleteTrip(${t.id})" class="text-rose-500 text-xs">Excluir</button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+      document.getElementById('tbody-trips').innerHTML = rowsHtml || `<tr><td colspan="8" class="py-4 text-center text-[var(--muted-foreground)]">Nenhuma viagem registrada ainda.</td></tr>`;
+
+      const avgPax = state.trips.length > 0 ? totalPax / state.trips.length : 0;
+      const netAll = totalRev - totalCost;
+
+      document.getElementById('trips-summary-cards').innerHTML = `
+        <div class="p-3 rounded-xl bg-[var(--card)] border">
+          <div class="text-xs text-[var(--muted-foreground)]">Viagens Registradas</div>
+          <div class="text-lg font-bold">${state.trips.length} trechos</div>
+          <div class="text-xs text-[var(--muted-foreground)]">${fmtNum(totalKm, 0)} km totais</div>
+        </div>
+        <div class="p-3 rounded-xl bg-[var(--card)] border">
+          <div class="text-xs text-[var(--muted-foreground)]">Média de Passageiros</div>
+          <div class="text-lg font-bold text-blue-500">${fmtNum(avgPax, 2)} pass./viagem</div>
+          <div class="text-xs text-[var(--muted-foreground)]">${totalPax} caronas dadas</div>
+        </div>
+        <div class="p-3 rounded-xl bg-[var(--card)] border">
+          <div class="text-xs text-[var(--muted-foreground)]">Total Recebido BlaBlaCar</div>
+          <div class="text-lg font-bold text-emerald-500">${fmtBRL(totalRev)}</div>
+          <div class="text-xs text-[var(--muted-foreground)]">Custo comb.+pedágio: ${fmtBRL(totalCost)}</div>
+        </div>
+        <div class="p-3 rounded-xl bg-[var(--card)] border">
+          <div class="text-xs text-[var(--muted-foreground)]">Saldo Operacional Acumulado</div>
+          <div class="text-lg font-bold ${netAll >= 0 ? 'text-emerald-500' : 'text-rose-500'}">${netAll >= 0 ? '+' : ''}${fmtBRL(netAll)}</div>
+          <div class="text-xs text-[var(--muted-foreground)]">Média ${fmtBRL(state.trips.length ? netAll/state.trips.length : 0)}/viagem</div>
+        </div>
+      `;
+    }
+
+    function addTrip() {
+      const date = document.getElementById('trip-date').value || new Date().toISOString().slice(0, 10);
+      const route = document.getElementById('trip-route').value;
+      const km = parseFloat(document.getElementById('trip-km').value) || 140;
+      const kml = parseFloat(document.getElementById('trip-kml').value) || 12.3;
+      const pax = parseInt(document.getElementById('trip-pax').value, 10) || 0;
+      const paxPrice = parseFloat(document.getElementById('trip-pax-price').value) || 40;
+      const fuelPrice = parseFloat(document.getElementById('trip-fuel-price').value) || 6.29;
+      const toll = parseFloat(document.getElementById('trip-toll').value) || 0;
+      const notes = document.getElementById('trip-notes').value.trim();
+
+      state.trips.push({
+        id: Date.now(),
+        date, route, km, kml, pax, paxPrice, fuelPrice, toll, notes
+      });
+      document.getElementById('trip-notes').value = '';
+      renderTrips();
+      saveState();
+    }
+
+    function deleteTrip(id) {
+      state.trips = state.trips.filter(t => t.id !== id);
+      renderTrips();
+      saveState();
+    }
+
+    function syncTripsFromLog() {
+      if (state.trips.length === 0) return;
+      const idaTrips = state.trips.filter(t => t.route.startsWith('Ida'));
+      const voltaTrips = state.trips.filter(t => t.route.startsWith('Volta'));
+      const avgAllPax = state.trips.reduce((a, t) => a + Number(t.pax || 0), 0) / state.trips.length;
+      const avgIda = idaTrips.length > 0 ? idaTrips.reduce((a, t) => a + Number(t.pax || 0), 0) / idaTrips.length : avgAllPax;
+      const avgVolta = voltaTrips.length > 0 ? voltaTrips.reduce((a, t) => a + Number(t.pax || 0), 0) / voltaTrips.length : avgAllPax;
+      const avgKml = state.trips.reduce((a, t) => a + Number(t.kml || 12.3), 0) / state.trips.length;
+
+      document.getElementById('inp-pax-ida').value = avgIda.toFixed(1);
+      document.getElementById('inp-pax-volta').value = avgVolta.toFixed(1);
+      document.getElementById('inp-consumption').value = avgKml.toFixed(1);
+      updateSim();
+    }
+
+    function renderMaint() {
+      document.getElementById('badge-maint-count').textContent = state.maint.length;
+      const totalMaint = state.maint.reduce((acc, m) => acc + (Number(m.cost) || 0), 0);
+      const monthsSpan = parseFloat(document.getElementById('maint-months-span').value) || 12;
+      const monthlyAvg = totalMaint / Math.max(1, monthsSpan);
+
+      const rowsHtml = state.maint.slice().reverse().map(m => `
+        <tr>
+          <td class="py-2 px-2 whitespace-nowrap">${m.date}</td>
+          <td class="py-2 px-2 font-medium">${m.desc}</td>
+          <td class="py-2 px-2"><span class="px-2 py-0.5 rounded bg-[var(--background)] border">${m.cat}</span></td>
+          <td class="py-2 px-2 text-right">${fmtNum(m.km, 0)} km</td>
+          <td class="py-2 px-2 text-right font-bold text-rose-500">${fmtBRL(m.cost)}</td>
+          <td class="py-2 px-2 text-center">
+            <button onclick="deleteMaint(${m.id})" class="text-rose-500 text-xs">Excluir</button>
+          </td>
+        </tr>
+      `).join('');
+
+      document.getElementById('tbody-maint').innerHTML = rowsHtml || `<tr><td colspan="6" class="py-4 text-center text-[var(--muted-foreground)]">Nenhuma manutenção cadastrada ainda.</td></tr>`;
+
+      document.getElementById('maint-summary-cards').innerHTML = `
+        <div class="p-3.5 rounded-xl bg-[var(--card)] border">
+          <div class="text-xs text-[var(--muted-foreground)]">Total Gasto Cadastrado</div>
+          <div class="text-lg font-bold text-rose-500">${fmtBRL(totalMaint)}</div>
+          <div class="text-xs text-[var(--muted-foreground)]">${state.maint.length} serviços registrados</div>
+        </div>
+        <div class="p-3.5 rounded-xl bg-[var(--card)] border">
+          <div class="text-xs text-[var(--muted-foreground)]">Rateio Mensal (${monthsSpan} meses)</div>
+          <div class="text-lg font-bold text-amber-500">${fmtBRL(monthlyAvg)}/mês</div>
+          <div class="text-xs text-[var(--muted-foreground)]">Clique em "Usar Rateio" para aplicar</div>
+        </div>
+        <div class="p-3.5 rounded-xl bg-[var(--card)] border">
+          <div class="text-xs text-[var(--muted-foreground)]">Custo por Km (base 2.100 km/mês)</div>
+          <div class="text-lg font-bold">${fmtBRL(monthlyAvg / 2100)}/km</div>
+          <div class="text-xs text-[var(--muted-foreground)]">Impacto na estrada</div>
+        </div>
+      `;
+    }
+
+    function addMaint() {
+      const date = document.getElementById('maint-date').value || new Date().toISOString().slice(0, 10);
+      const desc = document.getElementById('maint-desc').value.trim();
+      const cat = document.getElementById('maint-cat').value;
+      const cost = parseFloat(document.getElementById('maint-cost').value);
+      const km = parseFloat(document.getElementById('maint-km').value) || 115000;
+      if (!desc || isNaN(cost) || cost <= 0) return;
+
+      state.maint.push({ id: Date.now(), date, desc, cat, km, cost });
+      document.getElementById('maint-desc').value = '';
+      document.getElementById('maint-cost').value = '';
+      renderMaint();
+      saveState();
+    }
+
+    function deleteMaint(id) {
+      state.maint = state.maint.filter(m => m.id !== id);
+      renderMaint();
+      saveState();
+    }
+
+    function syncMaintFromLog() {
+      const totalMaint = state.maint.reduce((acc, m) => acc + (Number(m.cost) || 0), 0);
+      const monthsSpan = parseFloat(document.getElementById('maint-months-span').value) || 12;
+      if (totalMaint > 0) {
+        document.getElementById('inp-maint-monthly').value = Math.round(totalMaint / Math.max(1, monthsSpan));
+        updateSim();
+      }
+    }
+
+    function exportBackup() {
+      saveState();
+      const rawJson = localStorage.getItem(STORAGE_KEY) || "{}";
+      const filename = `backup_rota12x60_${new Date().toISOString().slice(0,10)}.json`;
+      if (window.AndroidBridge && typeof window.AndroidBridge.shareBackup === 'function') {
+        window.AndroidBridge.shareBackup(filename, rawJson);
+        return;
+      }
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(rawJson);
+      const a = document.createElement('a');
+      a.setAttribute("href", dataStr);
+      a.setAttribute("download", filename);
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    }
+
+    function importBackup(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const parsed = JSON.parse(e.target.result);
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(parsed));
+          loadState();
+          renderTrips();
+          renderMaint();
+          updateSim();
+        } catch (err) {
+          console.error("Arquivo inválido", err);
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function resetDefaults() {
+      localStorage.removeItem(STORAGE_KEY);
+      location.reload();
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const today = new Date().toISOString().slice(0, 10);
+      document.getElementById('trip-date').value = today;
+      document.getElementById('maint-date').value = today;
+      loadState();
+      renderTrips();
+      renderMaint();
+      updateSim();
+    });
+  </script>
+</body>
+</html>
