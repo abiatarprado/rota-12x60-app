@@ -32,22 +32,26 @@ jobs:
         run: |
           gradle assembleRelease --no-daemon
           cp app/build/outputs/apk/release/app-release.apk Rota-12x60-Peugeot208.apk
-          ls -lh Rota-12x60-Peugeot208.apk
+          cp app/build/outputs/apk/release/app-release.apk Rota-12x60-Peugeot208-v2.apk
+          ls -lh Rota-12x60-Peugeot208*.apk
 
       - name: Upload APK as Workflow Artifact
         uses: actions/upload-artifact@v4
         with:
           name: Rota-12x60-Peugeot208-APK
-          path: Rota-12x60-Peugeot208.apk
+          path: Rota-12x60-Peugeot208-v2.apk
 
-      - name: Publish APK to GitHub Releases (v1.0.0)
+      - name: Publish APK to GitHub Releases (v2.0.0 & v1.0.0)
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           if gh release view v1.0.0 >/dev/null 2>&1; then
-            gh release upload v1.0.0 Rota-12x60-Peugeot208.apk --clobber
+            gh release upload v1.0.0 Rota-12x60-Peugeot208.apk Rota-12x60-Peugeot208-v2.apk --clobber
+          fi
+          if gh release view v2.0.0 >/dev/null 2>&1; then
+            gh release upload v2.0.0 Rota-12x60-Peugeot208-v2.apk Rota-12x60-Peugeot208.apk --clobber
           else
-            gh release create v1.0.0 Rota-12x60-Peugeot208.apk \
-              --title "Rota 12x60 - Peugeot 208 (APK Android v1.0.0)" \
-              --notes "Aplicativo Android (.apk) personalizado para cálculo de custos do Peugeot 208 Allure 2013, caronas BlaBlaCar, Consignado Bradesco (40/119), troca de carro e estadia em Joinville na escala 12x12x12x60."
+            gh release create v2.0.0 Rota-12x60-Peugeot208-v2.apk Rota-12x60-Peugeot208.apk \
+              --title "Rota 12x60 - Peugeot 208 (APK Android v2.0.0)" \
+              --notes "Versão 2.0.0 assinada com chave fixa permanente: 2 pedágios (R$ 5,90 cada = R$ 11,80/trecho) e campos independentes de Seguro Mensal (R$ 120/mês), IPVA Anual e Licenciamento Anual."
           fi
